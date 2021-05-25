@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 
-namespace Voxel.Farm
+namespace Voxel.Common
 {
 	public class SelectManuBase : MonoBehaviour
 	{

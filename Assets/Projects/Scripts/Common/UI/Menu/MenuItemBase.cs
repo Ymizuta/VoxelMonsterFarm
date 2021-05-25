@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Voxel.Farm
+namespace Voxel.Common
 {
 	public class MenuItemBase : MonoBehaviour
 	{
