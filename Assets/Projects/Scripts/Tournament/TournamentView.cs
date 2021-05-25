@@ -13,7 +13,7 @@ namespace Voxel.Tournament
 		private bool isLoaded;
 
 		public TournamentBoard Board => board;
-		private TournamentMonsterList TournamentMonsterList => tournamentMonsterList;
+		public TournamentMonsterList TournamentMonsterList => tournamentMonsterList;
 
 		public override IEnumerator Initialize()
 		{
