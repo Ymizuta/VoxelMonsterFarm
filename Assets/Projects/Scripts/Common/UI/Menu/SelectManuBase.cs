@@ -38,34 +38,34 @@ namespace Voxel.Common
 				}).AddTo(this);
 		}
 
-		public void Show()
+		public virtual void Show()
 		{
 			if (!isCreate) Create();
 			itemParent.gameObject.SetActive(true);
 			Bind();
 		}
 
-		public void Hide()
+		public virtual void Hide()
 		{
 			itemParent.gameObject.SetActive(false);
 			disposable.Dispose();
 		}
 
-		public void SelectUp()
+		public virtual void SelectUp()
 		{
 			var nextIdx = CurrentIdx.Value - columnCount;
 			if (nextIdx < 0) return;
 			CurrentIdx.Value = nextIdx;
 		}
 
-		public void SelectDown()
+		public virtual void SelectDown()
 		{
 			var nextIdx = CurrentIdx.Value + columnCount;
 			if (items.Length <= nextIdx) return;
 			CurrentIdx.Value = nextIdx;
 		}
 
-		public void SelectLeft()
+		public virtual void SelectLeft()
 		{
 			if (CurrentIdx.Value % columnCount == 0) return;
 			var nextIdx = CurrentIdx.Value;
@@ -74,7 +74,7 @@ namespace Voxel.Common
 			CurrentIdx.Value = nextIdx;
 		}
 
-		public void SelectRight()
+		public virtual void SelectRight()
 		{
 			if (CurrentIdx.Value % columnCount == columnCount - 1) return;
 			var nextIdx = CurrentIdx.Value;

@@ -10,10 +10,12 @@ namespace Voxel.Tournament
 	{
 		private TournamentBoard board;
 		private TournamentMonsterList tournamentMonsterList;
+		private TournamentTopMenu topMenu;
 		private bool isLoaded;
 
 		public TournamentBoard Board => board;
 		public TournamentMonsterList TournamentMonsterList => tournamentMonsterList;
+		public TournamentTopMenu TopMenu => topMenu;
 
 		public override IEnumerator Initialize()
 		{
@@ -25,10 +27,11 @@ namespace Voxel.Tournament
 			yield return new WaitUntil(() => isLoaded);
 		}
 
-		public void OnBeforeMoveIn(TournamentMonsterParam[] monsterParams)
+		public void OnBeforeMoveIn(TournamentMonsterParam[] monsterParams, string[] menuStrs)
 		{
 			board.Initialize(monsterParams.Length);
 			tournamentMonsterList.Initialize(monsterParams.Select(x => x.MonsterName).ToArray());
+			topMenu.Initialize(menuStrs);
 		}
 
 		protected override void OnBack()
@@ -44,6 +47,9 @@ namespace Voxel.Tournament
 			// リスト
 			result = await AddressableManager.Instance.Load("Assets/Projects/AddressableAssets/Prefabs/Tournament/TournamentMonsterList.prefab");
 			tournamentMonsterList = Instantiate(result, CanvasManager.Instance.FrontCanvas.transform).GetComponent<TournamentMonsterList>();
+			// トップメニュー
+			result = await AddressableManager.Instance.Load("Assets/Projects/AddressableAssets/Prefabs/Tournament/TopMenu/TournamentTopMenu.prefab");
+			topMenu = Instantiate(result, CanvasManager.Instance.FrontCanvas.transform).GetComponent<TournamentTopMenu>();
 			action?.Invoke();
 		}
 	}

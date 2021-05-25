@@ -1,11 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
 
 namespace Voxel.Tournament
 {
 	public class TournamentModel : ModelBase
 	{
+		public enum CommandType
+		{
+			None,
+			TopMenu,
+			TournamentBoard,
+		}
+
+		public ReactiveProperty<CommandType> Command = new ReactiveProperty<CommandType>();
+
 		private TournamentMonsterParam[] monsterParams = new TournamentMonsterParam[] 
 		{
 			new TournamentMonsterParam("ƒCƒbƒk", 100, 30, 30, 25, 20, 45),
@@ -19,6 +29,7 @@ namespace Voxel.Tournament
 		};
 
 		public TournamentMonsterParam[] MonsterParams => monsterParams;
+		public string[] MenuStrs { get; private set; } = new string[] {"‡", "ŠüŒ ", "‘å‰ïŠüŒ ", };
 
 		public override void Initialize()
 		{

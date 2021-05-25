@@ -38,6 +38,7 @@ namespace Voxel.Farm
 		public override void OnBack()
 		{
 			base.OnBack();
+			setEventsDisposable.Dispose();
 		}
 
 		private void Bind()
@@ -161,6 +162,7 @@ namespace Voxel.Farm
 					{
 						Comment.Instance.Hide();
 						Voxel.SceneManagement.SceneLoader.ChangeScene(SceneManagement.SceneLoader.SceneName.Tournament);
+						OnBack();
 					});
 					break;
 				case FarmTopModel.FarmTopMenu.Params:
