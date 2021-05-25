@@ -15,39 +15,37 @@ namespace Voxel.Tournament
 
 	public class TournamentBoard : MonoBehaviour
 	{
-		private ResultType[][] results;
-		private TournamentPanel[][] panels;
-
 		[SerializeField] private GameObject panelPrefab;
 		[SerializeField] private GameObject headerPanelPrefab;
 		[SerializeField] private Transform panelRoot;
 
-		private void Awake()
+		private ResultType[][] results;
+		private TournamentPanel[][] panels;
+
+		public void Initialize(int monsterCount)
 		{
-			Initialize();
-		}
+			SetBackBoard(monsterCount);
 
-		public void Initialize()
-		{
-			var length = 8;
-
-			//SetBackBoard(length);
-
-			results = new ResultType[length][];
+			results = new ResultType[monsterCount][];
 			for (int i = 0; i < results.Length; i++)
 			{
 				results[i] = new ResultType[results.Length];
-				for (int j = 0; j < length; j++) results[i][j] = ResultType.None;
+				for (int j = 0; j < monsterCount; j++) results[i][j] = ResultType.None;
 				// 自分の枠にはスラッシュを入れる
 				results[i][i] = ResultType.Self;
 			}
 			// オブジェクトを保持する配列の初期化
-			panels = new TournamentPanel[length][];
-			for (int i = 0; i < length; i++) panels[i] = new TournamentPanel[length];
+			panels = new TournamentPanel[monsterCount][];
+			for (int i = 0; i < monsterCount; i++) panels[i] = new TournamentPanel[monsterCount];
 
-			Create();
+			Create(monsterCount);
 		}
 
+		/// <summary>
+		/// 勝敗情報を受け取ってトーナメント表を更新
+		/// </summary>
+		/// <param name="winnerIdx"></param>
+		/// <param name="loserIdx"></param>
 		public void SetWin(int winnerIdx, int loserIdx)
 		{
 			results[winnerIdx][loserIdx] = ResultType.Win;
@@ -69,34 +67,35 @@ namespace Voxel.Tournament
 		private void SetBackBoard(int monsterCount)
 		{
 			var panelRtf = panelPrefab.GetComponent<RectTransform>();
-			panelRoot.GetComponent<RectTransform>().sizeDelta = new Vector2(panelRtf.sizeDelta.x * monsterCount, panelRtf.sizeDelta.y * monsterCount);
+			var boardRtf = panelRoot.GetComponent<RectTransform>();
+			boardRtf.sizeDelta = new Vector2(panelRtf.sizeDelta.x * monsterCount, panelRtf.sizeDelta.y * monsterCount);
 		}
 
-		private void Create()
+		private void Create(int mosterCount)
 		{
+			// ヘッダー
+			var headerPanelSize = headerPanelPrefab.GetComponent<RectTransform>().sizeDelta.x;
+			for (int i = 0; i < mosterCount; i++)
+			{
+				var headerPanel = Instantiate(headerPanelPrefab, panelRoot);
+				headerPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(10f + (headerPanelSize * i) + ( i * 20f), 0f);
+				headerPanel.GetComponentInChildren<Text>().text = (i + 1).ToString();
+			}
+
 			var dist = panelPrefab.GetComponent<TournamentPanel>().Rtf.sizeDelta.y;
-			var yPos = dist * ((float)results.Length / 2.0f - 0.5f );
+			var yPos = -1f * dist;
 			for (int rowIdx = 0; rowIdx < results.Length; rowIdx++)
 			{
-				var xPos = dist * (results.Length / 2.0f - 0.5f) * -1.0f;
+				var xPos = 0f;
 				for (int columnIdx = 0; columnIdx < results[rowIdx].Length; columnIdx++)
 				{
 					var panel = Instantiate(panelPrefab, panelRoot).GetComponent<TournamentPanel>();
-					panel.Rtf.localPosition = new Vector3(xPos, yPos);
+					panel.Rtf.anchoredPosition = new Vector3(xPos, yPos);
 					panel.SetData(results[rowIdx][columnIdx]);
 					panels[rowIdx][columnIdx] = panel;
 					xPos += dist;
 				}
 				yPos -= dist;
-			}
-			// ヘッダー
-			for (int i = 0; i < panels[0].Length; i++)
-			{
-				var headerPanel = Instantiate(headerPanelPrefab, panelRoot);
-				var pos = panels[0][i].GetComponent<RectTransform>().position;
-				pos.y += panels[0][i].GetComponent<RectTransform>().sizeDelta.y;
-				headerPanel.GetComponent<RectTransform>().position = pos;
-				headerPanel.GetComponentInChildren<Text>().text = (i + 1).ToString();
 			}
 		}
 	}

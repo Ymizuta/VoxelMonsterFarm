@@ -23,7 +23,7 @@ namespace Voxel.Tournament
 			yield return base.Initialize();
 
 			// ‘JˆÚ‘Oˆ—
-			View.OnBeforeMoveIn();
+			View.OnBeforeMoveIn(Model.MonsterParams);
 
 			isInit = true;
 
