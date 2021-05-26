@@ -6,11 +6,12 @@ namespace Voxel
 {
 	public enum ParamType
 	{
-		Life = 0,
+		Hp = 0,
 		Power,
-		Int,
+		Guts,
+		Hit,
 		Speed,
-		Consentration,
+		Deffence,
 	}
 
 	public class StringCalculator
@@ -19,16 +20,18 @@ namespace Voxel
 		{
 			switch (type)
 			{
-				case ParamType.Life:
+				case ParamType.Hp:
 					return "体力";
 				case ParamType.Power:
 					return "ちから";
-				case ParamType.Int:
-					return "かしこさ";
+				case ParamType.Guts:
+					return "ガッツ";
+				case ParamType.Hit:
+					return "命中";
 				case ParamType.Speed:
 					return "はやさ";
-				case ParamType.Consentration:
-					return "集中力";
+				case ParamType.Deffence:
+					return "丈夫さ";
 				default:
 					Debug.LogWarning("想定していないタイプが選択されました type = " + type);
 					return "不明";

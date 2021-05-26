@@ -36,10 +36,14 @@ namespace Voxel.Farm
 			this.monsterName.text = param.MonsterName;
 			this.Age.text = $"{param.LivingWeek / 12}歳　{param.LivingWeek % 12}か月";
 			this.Achievement.text = $"{param.RaceCount}戦　{param.WinCount}勝";
-			for (int i = 0; i < items.Length; i++)
-			{
-				items[i].SetData(param.MonsterParams[i]);
-			}
+			// 能力値設定
+			var calc = new StringCalculator();
+			items[(int)ParamType.Hp].SetData(calc.GetParamName(ParamType.Hp), param.Hp);
+			items[(int)ParamType.Power].SetData(calc.GetParamName(ParamType.Power), param.Power);
+			items[(int)ParamType.Guts].SetData(calc.GetParamName(ParamType.Guts), param.Guts);
+			items[(int)ParamType.Hit].SetData(calc.GetParamName(ParamType.Hit), param.Hit);
+			items[(int)ParamType.Speed].SetData(calc.GetParamName(ParamType.Speed), param.Speed);
+			items[(int)ParamType.Deffence].SetData(calc.GetParamName(ParamType.Deffence), param.Deffence);
 		}
 
 		public void Hide()

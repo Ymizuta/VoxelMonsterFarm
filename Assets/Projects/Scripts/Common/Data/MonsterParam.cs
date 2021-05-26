@@ -7,27 +7,32 @@ namespace Voxel
 	[System.Serializable]
 	public class MonsterParam
 	{
+		public int MonseterId;
 		public string MonsterName { get; private set; }
 		public int LivingWeek { get; private set; }
 		public int RaceCount { get; set; }
 		public int WinCount { get; set; }
-		public int[] MonsterParams { get; private set; }
+		// パラメータ
+		public int Hp { get; set; } // ライフ
+		public int Power { get; set; } // ちから
+		public int Guts { get; set; } // ガッツ
+		public int Hit { get; set; } // 命中
+		public int Speed { get; set; } // 回避
+		public int Deffence { get; set; } // 丈夫さ
 
-		public MonsterParam()
+		public static MonsterParam Default => new MonsterParam
 		{
-			this.MonsterName = "イッヌ";
-			this.LivingWeek = 18;
-			this.RaceCount = 10;
-			this.WinCount = 8;
-			// 体力、ちから、かしこさ、速度、集中力
-			MonsterParams = new int[] 
-			{
-				30,
-				25,
-				28,
-				45,
-				40,
-			};
-		}
+			MonseterId = 1,
+			MonsterName = "イッヌ",
+			LivingWeek = 18,
+			RaceCount = 0,
+			WinCount = 0,
+			Hp = 30,
+			Power = 25,
+			Guts = 25,
+			Hit = 40,
+			Speed = 35,
+			Deffence = 25,
+		};
 	}
 }

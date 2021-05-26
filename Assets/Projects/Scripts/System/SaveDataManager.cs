@@ -24,6 +24,9 @@ namespace Voxel
 			if(str == "")
 			{
 				SaveData = SaveData.Default;
+				// デフォルトのモンスターを用意
+				SaveData.Monsters.Add(MonsterParam.Default);
+				SaveData.CurrentMonsterId = 1;
 			}
 			else
 			{

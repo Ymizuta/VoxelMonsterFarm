@@ -29,16 +29,18 @@ namespace Voxel.Training
 		{
 			switch (type)
 			{
-				case ParamType.Life:
+				case ParamType.Hp:
 					return Color.yellow;
 				case ParamType.Power:
 					return Color.red;
-				case ParamType.Int:
+				case ParamType.Guts:
 					return Color.green;
+				case ParamType.Hit:
+					return new Color(148.0f / 255.0f, 87.0f / 255.0f, 164.0f / 255.0f);
 				case ParamType.Speed:
+					return new Color(0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
+				case ParamType.Deffence:
 					return Color.blue;
-				case ParamType.Consentration:
-					return new Color(148.0f /255.0f, 87.0f/255.0f, 164.0f / 255.0f);
 				default:
 					Debug.LogWarning("想定していないタイプが選択されました type = " + type);
 					return Color.gray;

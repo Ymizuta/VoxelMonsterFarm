@@ -7,11 +7,13 @@ namespace Voxel.Farm
 {
 	public class MonsterParamItem : MonoBehaviour
 	{
+		[SerializeField] private Text typeText;
 		[SerializeField] private Text valueText;
 		[SerializeField] private Slider slider;
 
-		public void SetData(int val)
+		public void SetData(string typeStr, int val)
 		{
+			typeText.text = typeStr;
 			valueText.text = val.ToString();
 			slider.value = val;
 		}

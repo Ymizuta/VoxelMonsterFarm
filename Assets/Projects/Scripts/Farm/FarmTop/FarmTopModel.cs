@@ -47,7 +47,7 @@ namespace Voxel.Farm
 		public override void Initialize()
 		{
 			base.Initialize();
-			MonsterParam = new MonsterParam();
+			MonsterParam = SaveDataManager.SaveData.Monsters.Find(x => x.MonseterId == SaveDataManager.SaveData.CurrentMonsterId);
 		}
 
 		public string GetInitComment()

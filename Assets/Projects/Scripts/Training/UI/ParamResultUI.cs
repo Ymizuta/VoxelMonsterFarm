@@ -40,13 +40,22 @@ namespace Voxel.Training
 
 		private void SetData(MonsterParam param, int[] addVal)
 		{
+			var vals = new int[] 
+			{
+				param.Hp,
+				param.Power,
+				param.Guts,
+				param.Hit,
+				param.Speed,
+				param.Deffence,
+			};
 			for (int i = 0; i < addVal.Length; i++) items[i].gameObject.SetActive(false);
 			for (int i = 0; i < addVal.Length; i++)
 			{
 				if (addVal[i] != 0)
 				{
 					items[i].gameObject.SetActive(true);
-					items[i].SetData((ParamType)i, param.MonsterParams[i], addVal[i]);
+					items[i].SetData((ParamType)i, vals[i], addVal[i]);
 				}
 			}
 		}
