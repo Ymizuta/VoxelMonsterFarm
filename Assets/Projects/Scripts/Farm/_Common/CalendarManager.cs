@@ -5,7 +5,7 @@ using UnityEngine;
 using Voxel.UI;
 using Voxel.SceneManagement;
 
-namespace Voxel.Farm
+namespace Voxel
 {
 	public class CalendarManager : SingletonMonoBehaviour<CalendarManager>
 	{

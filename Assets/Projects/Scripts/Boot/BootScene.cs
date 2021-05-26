@@ -12,6 +12,9 @@ namespace Voxel.Boot
 		private void Awake()
 		{
 			SaveDataManager.Load();
+			// ‰Šú‰»
+			GameCommonModel.Instance.SetCalendar();
+
 			for (int i = 0; i < dontDestroyObjects.Length; i++)
 			{
 				DontDestroyOnLoad(dontDestroyObjects[i].gameObject);

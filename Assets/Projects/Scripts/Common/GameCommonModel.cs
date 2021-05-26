@@ -11,12 +11,11 @@ namespace Voxel
 		public ReactiveProperty<int> Month { get; set; } = new ReactiveProperty<int>();
 		public ReactiveProperty<int> Week { get; set; } = new ReactiveProperty<int>();
 
-		protected override void Awake()
+		public void SetCalendar()
 		{
-			base.Awake();
-			Year.Value = 1;
-			Month.Value = 4;
-			Week.Value = 1;
+			Year.Value = SaveDataManager.SaveData.Year;
+			Month.Value = SaveDataManager.SaveData.Month;
+			Week.Value = SaveDataManager.SaveData.Week;
 		}
 	}
 }
