@@ -11,6 +11,7 @@ namespace Voxel.Boot
 
 		private void Awake()
 		{
+			SaveDataManager.Load();
 			for (int i = 0; i < dontDestroyObjects.Length; i++)
 			{
 				DontDestroyOnLoad(dontDestroyObjects[i].gameObject);

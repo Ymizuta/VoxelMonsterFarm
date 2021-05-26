@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Voxel
 {
+	[System.Serializable]
 	public class MonsterParam
 	{
 		public string MonsterName { get; private set; }
