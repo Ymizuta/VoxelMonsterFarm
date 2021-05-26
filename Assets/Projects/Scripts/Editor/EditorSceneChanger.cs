@@ -24,6 +24,12 @@ public class EditorSceneChanger : MonoBehaviour
 		ChangeScene("Tournament");
 	}
 
+	[MenuItem("ChangeScene/Battle")]
+	public static void ChangeBattleScene()
+	{
+		ChangeScene("Battle");
+	}
+
 	private static void ChangeScene(string scene)
 	{
 		EditorApplication.SaveCurrentSceneIfUserWantsTo();
