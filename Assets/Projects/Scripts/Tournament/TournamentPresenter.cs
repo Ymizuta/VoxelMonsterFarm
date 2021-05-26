@@ -24,7 +24,14 @@ namespace Voxel.Tournament
 			yield return base.Initialize();
 
 			// 遷移前処理
-			View.OnBeforeMoveIn(Model.MonsterParams, Model.MenuStrs);
+			// シーン間をやり取りするモデルを用意
+			if(TournamentCommonModel.Instance == null)
+			{
+				var commonModel = new GameObject("TournamentCommonModel").AddComponent<TournamentCommonModel>();
+				commonModel.Initialize();
+				DontDestroyOnLoad(commonModel.gameObject);
+			}
+			View.OnBeforeMoveIn(Model.MonsterParams, Model.MenuStrs, TournamentCommonModel.Instance.Results);
 
 			isInit = true;
 
@@ -39,6 +46,12 @@ namespace Voxel.Tournament
 		public override IEnumerator Run()
 		{
 			yield return base.Run();			
+		}
+
+		public override void OnBack()
+		{
+			base.OnBack();
+			setEventsDisposable.Dispose();
 		}
 
 		private void Bind()
@@ -70,7 +83,22 @@ namespace Voxel.Tournament
 			InputManager.Instance.OnSpaceKeyDownAsObservable
 				.Subscribe(_ =>
 				{
-					Debug.Log(View.TopMenu.CurrentIdx);
+					switch ((TournamentModel.TopMenuType)View.TopMenu.CurrentIdx.Value)
+					{
+						// 試合
+						case TournamentModel.TopMenuType.Match:
+							SceneManagement.SceneLoader.ChangeScene(SceneManagement.SceneLoader.SceneName.Battle);
+							OnBack();
+							break;
+						// 試合を棄権
+						case TournamentModel.TopMenuType.AbstentionNextMatch:
+							break;
+						// 大会を棄権
+						case TournamentModel.TopMenuType.AbstentionTournament:
+							break;
+						default:
+							break;
+					}
 				}).AddTo(setEventsDisposable);
 			// トーナメント表へ
 			InputManager.Instance.OnBKeyDownAsObservable

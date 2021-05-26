@@ -12,6 +12,7 @@ namespace Voxel.SceneManagement
 			Farm,
 			Running,
 			Tournament,
+			Battle,
 		}
 
 		public static void ChangeScene(SceneName sceneName)

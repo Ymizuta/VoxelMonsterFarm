@@ -5,14 +5,6 @@ using UnityEngine.UI;
 
 namespace Voxel.Tournament
 {
-	public enum ResultType
-	{
-		Win = 0,
-		Lose,
-		Self,
-		None,
-	}
-
 	public class TournamentBoard : MonoBehaviour
 	{
 		[SerializeField] private GameObject panelPrefab;
@@ -22,18 +14,11 @@ namespace Voxel.Tournament
 		private ResultType[][] results;
 		private TournamentPanel[][] panels;
 
-		public void Initialize(int monsterCount)
+		public void Initialize(int monsterCount, ResultType[][] results)
 		{
 			SetBackBoard(monsterCount);
 
-			results = new ResultType[monsterCount][];
-			for (int i = 0; i < results.Length; i++)
-			{
-				results[i] = new ResultType[results.Length];
-				for (int j = 0; j < monsterCount; j++) results[i][j] = ResultType.None;
-				// 自分の枠にはスラッシュを入れる
-				results[i][i] = ResultType.Self;
-			}
+			this.results = results;
 			// オブジェクトを保持する配列の初期化
 			panels = new TournamentPanel[monsterCount][];
 			for (int i = 0; i < monsterCount; i++) panels[i] = new TournamentPanel[monsterCount];
@@ -46,11 +31,8 @@ namespace Voxel.Tournament
 		/// </summary>
 		/// <param name="winnerIdx"></param>
 		/// <param name="loserIdx"></param>
-		public void SetWin(int winnerIdx, int loserIdx)
+		public void UpdateBoard()
 		{
-			results[winnerIdx][loserIdx] = ResultType.Win;
-			results[loserIdx][winnerIdx] = ResultType.Lose;
-
 			for (int i = 0; i < panels.Length; i++)
 			{
 				for (int j = 0; j < panels[0].Length; j++)

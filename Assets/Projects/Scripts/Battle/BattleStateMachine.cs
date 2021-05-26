@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Voxel.UI;
 using UniRx;
+using Voxel.Tournament;
 
 namespace Voxel.Battle
 {
@@ -66,6 +67,13 @@ namespace Voxel.Battle
 			yield return new WaitForSeconds(2f);
 			var loser = myMonster.IsDown() ? myMonster.MonsterName : enemyMonster.MonsterName;
 			Comment.Instance.SetComment($"{loser}は倒れた！");
+			yield return new WaitForSeconds(3f);
+			TournamentCommonModel.Instance.SetResult(winnerIdx : 0, loserIdx: 1);
+			FadeManager.Instance.PlayFadeOut(() => 
+			{
+				Comment.Instance.Hide();
+				SceneManagement.SceneLoader.ChangeScene(SceneManagement.SceneLoader.SceneName.Tournament);
+			});
 		}
 
 		/// <summary>

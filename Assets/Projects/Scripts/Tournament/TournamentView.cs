@@ -27,9 +27,9 @@ namespace Voxel.Tournament
 			yield return new WaitUntil(() => isLoaded);
 		}
 
-		public void OnBeforeMoveIn(TournamentMonsterParam[] monsterParams, string[] menuStrs)
+		public void OnBeforeMoveIn(TournamentMonsterParam[] monsterParams, string[] menuStrs, ResultType[][] results)
 		{
-			board.Initialize(monsterParams.Length);
+			board.Initialize(monsterParams.Length, results);
 			tournamentMonsterList.Initialize(monsterParams.Select(x => x.MonsterName).ToArray());
 			topMenu.Initialize(menuStrs);
 		}
