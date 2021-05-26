@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Voxel.UI;
+using Voxel.SceneManagement;
 
 namespace Voxel.Farm
 {
@@ -17,22 +18,28 @@ namespace Voxel.Farm
 		{
 			if (isInit) yield break;
 			yield return base.Initialize();
-			View.OnBeforeMoveIn(Model.FarmTopMenuStrs, Model.TrainingMenuStrs, Model.MonsterParam);
 			isInit = true;
-			FadeManager.Instance.PlayFadeIn(() => 
-			{
-				Bind();
-				Model.Command.Value = FarmTopModel.CommandType.FarmTopMenu;
-			});			
 		}
 
 		public override IEnumerator Run()
 		{
 			yield return base.Run();
+			View.OnBeforeMoveIn(Model.FarmTopMenuStrs, Model.TrainingMenuStrs, Model.MonsterParam);
 			View.FarmTopMenu.Show();
 			Comment.Instance.Show(Model.GetInitComment());
-			if (FadeManager.Instance.IsFadeOut) FadeManager.Instance.PlayFadeIn();
-			Model.Command.Value = FarmTopModel.CommandType.FarmTopMenu;
+			if (FadeManager.Instance.IsFadeOut)
+			{
+				FadeManager.Instance.PlayFadeIn(() =>
+				{
+					Bind();
+					Model.Command.Value = FarmTopModel.CommandType.FarmTopMenu;
+				});
+			}
+			else
+			{
+				Bind();
+				Model.Command.Value = FarmTopModel.CommandType.FarmTopMenu;
+			}
 		}
 
 		public override void OnBack()
@@ -101,7 +108,8 @@ namespace Voxel.Farm
 			InputManager.Instance.OnSpaceKeyDownAsObservable
 				.Subscribe(_ =>
 				{
-					Model.OnDecideTrainingMenu(View.TrainingMenu.CurrentIdx.Value);
+					OnBack();
+					OnDecideTrainingMenu(View.TrainingMenu.CurrentIdx.Value);
 				}).AddTo(setEventsDisposable);
 			// 戻る
 			InputManager.Instance.OnBKeyDownAsObservable
@@ -175,6 +183,34 @@ namespace Voxel.Farm
 					Debug.LogWarning("想定していないタイプが選択されました type =" + type);
 					break;
 			}
+		}
+
+		/// <summary>
+		/// トレーニングメニューを決定したときに呼ばれ、該当シーンへ遷移する
+		/// </summary>
+		/// <param name="selectIdx"></param>
+		public void OnDecideTrainingMenu(int selectIdx)
+		{
+			var type = (FarmTopModel.TrainingMenu)selectIdx;
+			var sceneName = SceneLoader.SceneName.Running;
+			switch (type)
+			{
+				case FarmTopModel.TrainingMenu.Running:
+					sceneName = SceneLoader.SceneName.Running;
+					break;
+				case FarmTopModel.TrainingMenu.Swimming:
+					break;
+				case FarmTopModel.TrainingMenu.ObstacleCourse:
+					break;
+				case FarmTopModel.TrainingMenu.Meditation:
+					break;
+				case FarmTopModel.TrainingMenu.DestroyObstacle:
+					break;
+				default:
+					Debug.LogWarning("想定していないタイプが選択されました type =" + type);
+					break;
+			}
+			FadeManager.Instance.PlayFadeOut(() => SceneLoader.ChangeScene(sceneName));
 		}
 
 		/// <summary>

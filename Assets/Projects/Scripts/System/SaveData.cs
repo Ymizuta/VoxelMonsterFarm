@@ -20,6 +20,8 @@ namespace Voxel
 		public List<MonsterParam> Monsters { get; set; } // 所有モンスター
 		public int CurrentMonsterId;
 
+		public MonsterParam CurrentMonster => Monsters.Find(x => x.MonseterId == SaveDataManager.SaveData.CurrentMonsterId);
+
 		public static SaveData Default => new SaveData
 		{
 			BreederName = "ブリーダー",

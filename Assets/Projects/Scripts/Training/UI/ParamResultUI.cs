@@ -49,8 +49,8 @@ namespace Voxel.Training
 				param.Speed,
 				param.Deffence,
 			};
-			for (int i = 0; i < addVal.Length; i++) items[i].gameObject.SetActive(false);
-			for (int i = 0; i < addVal.Length; i++)
+			for (int i = 0; i < items.Length; i++) items[i].gameObject.SetActive(false);
+			for (int i = 0; i < items.Length; i++)
 			{
 				if (addVal[i] != 0)
 				{

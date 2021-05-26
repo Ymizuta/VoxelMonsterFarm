@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
-using Voxel.SceneManagement;
 using Voxel.UI;
 
 namespace Voxel.Farm
@@ -47,7 +46,7 @@ namespace Voxel.Farm
 		public override void Initialize()
 		{
 			base.Initialize();
-			MonsterParam = SaveDataManager.SaveData.Monsters.Find(x => x.MonseterId == SaveDataManager.SaveData.CurrentMonsterId);
+			MonsterParam = SaveDataManager.SaveData.CurrentMonster;
 		}
 
 		public string GetInitComment()
@@ -59,34 +58,6 @@ namespace Voxel.Farm
 				"イッヌ は少し疲れてるみたい…",
 			};
 			return comments[Random.Range(0,3)];
-		}
-
-		/// <summary>
-		/// トレーニングメニューを決定したときに呼ばれ、該当シーンへ遷移する
-		/// </summary>
-		/// <param name="selectIdx"></param>
-		public void OnDecideTrainingMenu(int selectIdx)
-		{
-			var type = (TrainingMenu)selectIdx;
-			var sceneName = SceneLoader.SceneName.Running;
-			switch (type)
-			{
-				case TrainingMenu.Running:
-					sceneName = SceneLoader.SceneName.Running;
-					break;
-				case TrainingMenu.Swimming:
-					break;
-				case TrainingMenu.ObstacleCourse:
-					break;
-				case TrainingMenu.Meditation:
-					break;
-				case TrainingMenu.DestroyObstacle:
-					break;
-				default:
-					Debug.LogWarning("想定していないタイプが選択されました type =" + type);
-					break;
-			}
-			FadeManager.Instance.PlayFadeOut(() => SceneLoader.ChangeScene(sceneName));
 		}
 
 		protected override void OnBack()

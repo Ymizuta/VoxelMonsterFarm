@@ -44,21 +44,27 @@ namespace Voxel.Training
 		private void StartRunning()
 		{
 			Comment.Instance.Show("ウッシ です");
-			Observable.Timer(TimeSpan.FromSeconds(5))
+			Observable.Timer(TimeSpan.FromSeconds(2))
 				.Subscribe(_ =>
 				{
 					tween.Pause();
 					resultUi.ShowResult();
-					Observable.Timer(TimeSpan.FromSeconds(2))
+					Observable.Timer(TimeSpan.FromSeconds(1))
 						.Subscribe(_ =>
 						{
 							resultUi.HideResult();
-							var addVal = new int[] { 10, 0, 5, 0, 0 };
-							resultUi.ShowParam(new MonsterParam(), addVal);
+							// パラメータ更新
+							var addVal = GetAddMonsterParam();
+							var monsterparam = SaveDataManager.SaveData.CurrentMonster;
+							resultUi.ShowParam(monsterparam, addVal);
+							UpdateMonsterParam(monsterparam, addVal);
+							// コメント
 							Comment.Instance.SetComment(GetResultComment(addVal));
+
 							Observable.Timer(TimeSpan.FromSeconds(4))
 							.Subscribe(_ =>
 							{
+								CalendarManager.Instance.NextWeek();
 								FadeManager.Instance.PlayFadeOut(() => SceneLoader.ChangeScene(SceneLoader.SceneName.Farm));
 							}).AddTo(this);
 						}).AddTo(this);
@@ -97,6 +103,24 @@ namespace Voxel.Training
 				}
 			}
 			return comment;
+		}
+
+		/// <summary>
+		/// モンスターのパラムを更新
+		/// </summary>
+		private void UpdateMonsterParam(MonsterParam param, int[] addVal)
+		{
+			param.Hp += addVal[(int)ParamType.Hp];
+			param.Power += addVal[(int)ParamType.Power];
+			param.Guts += addVal[(int)ParamType.Guts];
+			param.Hit += addVal[(int)ParamType.Hit];
+			param.Speed += addVal[(int)ParamType.Speed];
+			param.Deffence += addVal[(int)ParamType.Deffence];
+		}
+
+		private int[] GetAddMonsterParam()
+		{
+			return new int[] { UnityEngine.Random.Range(5,11), 0, UnityEngine.Random.Range(2, 6), 0, 0, 0};
 		}
 	}
 }
