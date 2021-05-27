@@ -16,13 +16,7 @@ namespace Voxel.Farm
 		private PresenterBase currentPresenter;
 		private PresenterBase pausePresenter;
 
-		protected override void Awake()
-		{
-			base.Awake();
-			Initialize();
-		}
-
-		private void Initialize()
+		public void Initialize()
 		{
 			Calendar.Instance.Initialize();
 			ChangePresenter(FarmPresenterType.FarmTop);

@@ -5,12 +5,13 @@ using Voxel.SceneManagement;
 
 namespace Voxel.Boot
 {
-	public class BootScene : MonoBehaviour
+	public class BootScene : SceneBase
 	{
 		[SerializeField] private GameObject[] dontDestroyObjects;
 
-		private void Awake()
+		public override void Initialize(SceneData data = null)
 		{
+			base.Initialize(data);
 			SaveDataManager.Load();
 			// èâä˙âª
 			GameCommonModel.Instance.SetCalendar();
@@ -19,7 +20,7 @@ namespace Voxel.Boot
 			{
 				DontDestroyOnLoad(dontDestroyObjects[i].gameObject);
 			}
-			SceneLoader.ChangeScene(SceneLoader.SceneName.Farm);
+			SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Farm);
 		}
 	}
 }

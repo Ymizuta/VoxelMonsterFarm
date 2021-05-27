@@ -21,7 +21,7 @@ namespace Voxel.Farm
 			isInit = true;
 		}
 
-		public override IEnumerator Run()
+		public override IEnumerator Run(SceneManagement.SceneData data = null)
 		{
 			yield return base.Run();
 			View.OnBeforeMoveIn(Model.FarmTopMenuStrs, Model.TrainingMenuStrs, Model.MonsterParam);
@@ -169,7 +169,7 @@ namespace Voxel.Farm
 					FadeManager.Instance.PlayFadeOut(() => 
 					{
 						Comment.Instance.Hide();
-						Voxel.SceneManagement.SceneLoader.ChangeScene(SceneManagement.SceneLoader.SceneName.Tournament);
+						SceneLoader.Instance.ChangeScene(SceneManagement.SceneLoader.SceneName.Tournament);
 						OnBack();
 					});
 					break;
@@ -210,7 +210,7 @@ namespace Voxel.Farm
 					Debug.LogWarning("想定していないタイプが選択されました type =" + type);
 					break;
 			}
-			FadeManager.Instance.PlayFadeOut(() => SceneLoader.ChangeScene(sceneName));
+			FadeManager.Instance.PlayFadeOut(() => SceneLoader.Instance.ChangeScene(sceneName));
 		}
 
 		/// <summary>

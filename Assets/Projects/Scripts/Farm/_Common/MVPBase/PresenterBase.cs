@@ -21,7 +21,7 @@ namespace Voxel
 			yield return View.Initialize();
 		}
 
-		public virtual IEnumerator Run()
+		public virtual IEnumerator Run(SceneManagement.SceneData data = null)
 		{
 			yield return Initialize();
 		}
