@@ -89,7 +89,8 @@ namespace Voxel.Battle
 					Comment.Instance.Show($"{monster.MonsterName}‚Íg‚ğç‚Á‚Ä‚¢‚é");
 					break;
 			}
-			yield return new WaitForSeconds(1f);
+			//yield return new WaitForSeconds(1f);
+			yield return null;
 		}
 
 		private int CalcDamage(BattleMonsterParam monster, CommandParam command, BattleMonsterParam target, CommandParam targetCommand)

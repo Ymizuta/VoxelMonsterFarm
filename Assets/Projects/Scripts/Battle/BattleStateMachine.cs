@@ -11,13 +11,17 @@ namespace Voxel.Battle
 	{
 		[SerializeField] BattleMonsterStatusUI[] statusUis;
 
-		BattleMonsterParam myMonster;
-		BattleMonsterParam enemyMonster;
+		BattleMonsterParam currentMonster;
+		BattleMonsterParam counterMonster;
 		PlayerCommandProcess commandProcess;
 		ExcuteBattleProcess excuteBattleProcess;
 
-		private void Awake()
+		public void Initialize(SceneManagement.SceneData data)
 		{
+			var battleData = data as BattleSceneData;
+			var converter = new TournamentBattleParamConvertor();
+			currentMonster = converter.ConvertTournamentParamToBattleParam(battleData.CurrentMonsterIdx, TournamentCommonModel.Instance.GetMonsterParam(battleData.CurrentMonsterIdx));
+			counterMonster = converter.ConvertTournamentParamToBattleParam(battleData.CounterMonsterIdx, TournamentCommonModel.Instance.GetMonsterParam(battleData.CounterMonsterIdx));
 			StartStateMachine();
 		}
 
@@ -30,12 +34,10 @@ namespace Voxel.Battle
 		{
 			commandProcess = this.gameObject.AddComponent<PlayerCommandProcess>();
 			excuteBattleProcess = this.gameObject.GetComponent<ExcuteBattleProcess>();
-			this.myMonster = new BattleMonsterParam("ピカチュウ", 100, 25, 0, 10, 30, 30);
-			this.enemyMonster = new BattleMonsterParam("コラッタ", 75, 20, 0, 15, 35, 30);
-			statusUis[0].SetData(myMonster);
-			statusUis[1].SetData(enemyMonster);
+			statusUis[0].SetData(currentMonster);
+			statusUis[1].SetData(counterMonster);
 
-			yield return BattleProcess(myMonster, enemyMonster);
+			yield return BattleProcess(currentMonster, counterMonster);
 			yield return EndBattleProcess();
 		}
 
@@ -64,15 +66,16 @@ namespace Voxel.Battle
 
 		private IEnumerator EndBattleProcess()
 		{
-			yield return new WaitForSeconds(2f);
-			var loser = myMonster.IsDown() ? myMonster.MonsterName : enemyMonster.MonsterName;
-			Comment.Instance.SetComment($"{loser}は倒れた！");
-			yield return new WaitForSeconds(3f);
-			TournamentCommonModel.Instance.SetResult(winnerIdx : 0, loserIdx: 1);
+			yield return new WaitForSeconds(1f);
+			var winner = counterMonster.IsDown() ? currentMonster: counterMonster;
+			var loser = currentMonster.IsDown() ? currentMonster : counterMonster;
+			Comment.Instance.SetComment($"{loser.MonsterName}は倒れた！");
+			yield return new WaitForSeconds(1f);
 			FadeManager.Instance.PlayFadeOut(() => 
 			{
 				Comment.Instance.Hide();
-				SceneManagement.SceneLoader.ChangeScene(SceneManagement.SceneLoader.SceneName.Tournament);
+				var data = new TournamentSceneData(winner.MonsterIdx, loser.MonsterIdx);
+				SceneManagement.SceneLoader.Instance.ChangeScene(SceneManagement.SceneLoader.SceneName.Tournament, data);
 			});
 		}
 
@@ -82,7 +85,7 @@ namespace Voxel.Battle
 		/// <returns></returns>
 		private bool IsAnyDown()
 		{
-			return myMonster.IsDown() || enemyMonster.IsDown();
+			return currentMonster.IsDown() || counterMonster.IsDown();
 		}
 	}
 
@@ -108,8 +111,9 @@ namespace Voxel.Battle
 		private ReactiveProperty<int> speed = new ReactiveProperty<int>(); // 速度
 		private ReactiveProperty<int> luck = new ReactiveProperty<int>(); // 運
 
-		public BattleMonsterParam(string monsterName, int hp, int attack, int guts, int diffence, int speed, int luck)
+		public BattleMonsterParam(int monsterIdx, string monsterName, int hp, int attack, int guts, int diffence, int speed, int luck)
 		{
+			this.MonsterIdx = monsterIdx;
 			this.monsterName = monsterName;
 			this.hp.Value = hp;
 			this.attack.Value = attack;
@@ -119,6 +123,7 @@ namespace Voxel.Battle
 			this.luck.Value = luck;
 		}
 
+		public int MonsterIdx { get; private set; }
 		public string MonsterName => monsterName;
 		public IReadOnlyReactiveProperty<int> HP => hp;
 		public IReadOnlyReactiveProperty<int> Attack => attack;
