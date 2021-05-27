@@ -30,10 +30,16 @@ namespace Voxel.Tournament
 			};
 
 		public ResultType[][] Results { get; private set; }
+		public List<int> MatchOrderList { get; private set; }
+		public int RotationCount { get; private set; } // 現在のローテーション数
+		public int CurrentRotationMatchIdx { get; set; } // 現在のローテーションでの試合数
+		public int MaxRotationCount { get; private set; } // 全ローテーション数
+		public int MatchCountPerRotation { get; private set; } // １ローテーションあたりの試合数
 
 		public void Initialize()
 		{
 			InitResult();
+			InitMatchOrderList();
 		}
 
 		/// <summary>
@@ -52,6 +58,38 @@ namespace Voxel.Tournament
 		}
 
 		/// <summary>
+		/// 試合の順番にかかる情報の初期化
+		/// </summary>
+		private void InitMatchOrderList()
+		{
+			MatchOrderList = new List<int>();
+			for (int i = 0; i < MonsterParams.Length / 2; i++) MatchOrderList.Add(i);
+			for (int i = MonsterParams.Length - 1; MonsterParams.Length / 2 <= i; i--) MatchOrderList.Add(i);
+			// ローテーション数
+			MaxRotationCount = MatchOrderList.Count - 1;
+			RotationCount = 1;
+			// ローテーションごとの試合数
+			MatchCountPerRotation = MatchOrderList.Count / 2;
+			CurrentRotationMatchIdx = 0;
+		}
+
+		/// <summary>
+		/// 試合順番のローテーションを更新
+		/// </summary>
+		public void UpdateMatchOrderList()
+		{
+			RotationCount++;
+			CurrentRotationMatchIdx = 0;
+			// 組み合わせリストの更新
+			var firstMoveVal = MatchOrderList[MatchOrderList.Count / 2];
+			var secondMoveVal = MatchOrderList[MatchOrderList.Count / 2 - 1];
+			MatchOrderList.Remove(firstMoveVal);
+			MatchOrderList.Insert(1, firstMoveVal);
+			MatchOrderList.Remove(secondMoveVal);
+			MatchOrderList.Add(secondMoveVal);
+		}
+
+		/// <summary>
 		/// 勝敗を登録する
 		/// </summary>
 		/// <param name="winnerIdx"></param>
@@ -60,6 +98,34 @@ namespace Voxel.Tournament
 		{
 			Results[winnerIdx][loserIdx] = ResultType.Win;
 			Results[loserIdx][winnerIdx] = ResultType.Lose;
+		}
+
+		/// <summary>
+		/// 全試合終了しているか
+		/// </summary>
+		/// <returns></returns>
+		public bool IsEndTournament()
+		{
+			return MaxRotationCount < RotationCount;
+		}
+
+		/// <summary>
+		/// 今のローテーションの試合が一巡しているか
+		/// </summary>
+		/// <returns></returns>
+		public bool IsEndCurrentCycle()
+		{
+			return MatchCountPerRotation <= CurrentRotationMatchIdx;
+		}
+
+		/// <summary>
+		/// 指定したインデックスのモンスターパラムを返す
+		/// </summary>
+		/// <param name="monsterIdx"></param>
+		/// <returns></returns>
+		public TournamentMonsterParam GetMonsterParam(int monsterIdx)
+		{
+			return MonsterParams[monsterIdx];
 		}
 	}
 }
