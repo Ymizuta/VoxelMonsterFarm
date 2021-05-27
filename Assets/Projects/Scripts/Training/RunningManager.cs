@@ -65,7 +65,7 @@ namespace Voxel.Training
 							.Subscribe(_ =>
 							{
 								CalendarManager.Instance.NextWeek();
-								FadeManager.Instance.PlayFadeOut(() => SceneLoader.ChangeScene(SceneLoader.SceneName.Farm));
+								FadeManager.Instance.PlayFadeOut(() => SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Farm));
 							}).AddTo(this);
 						}).AddTo(this);
 				}).AddTo(this);
