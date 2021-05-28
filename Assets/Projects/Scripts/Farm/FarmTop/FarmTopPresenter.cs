@@ -192,11 +192,11 @@ namespace Voxel.Farm
 		public void OnDecideTrainingMenu(int selectIdx)
 		{
 			var type = (FarmTopModel.TrainingMenu)selectIdx;
-			var sceneName = SceneLoader.SceneName.Running;
+			var sceneName = SceneLoader.SceneName.Training;
 			switch (type)
 			{
 				case FarmTopModel.TrainingMenu.Running:
-					sceneName = SceneLoader.SceneName.Running;
+					//sceneName = SceneLoader.SceneName.Running;
 					break;
 				case FarmTopModel.TrainingMenu.Swimming:
 					break;

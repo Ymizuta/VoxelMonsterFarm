@@ -13,6 +13,7 @@ namespace Voxel.SceneManagement
 			Running,
 			Tournament,
 			Battle,
+			Training,
 		}
 
 		protected override void Awake()
