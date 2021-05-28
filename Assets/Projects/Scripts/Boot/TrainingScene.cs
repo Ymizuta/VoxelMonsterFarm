@@ -17,14 +17,16 @@ namespace Voxel.Training
 		public override void Initialize(SceneData data = null)
 		{
 			base.Initialize(data);
-			StartCoroutine(LoadAdditiveSceneAsync(() => 
-			{
-				FadeManager.Instance.PlayFadeIn(() => 
+			var tData = data as TrainingSceneData;
+			StartCoroutine(LoadAdditiveSceneAsync(tData.TrainingType, 
+				() => 
 				{
-					// フェードが明けてから実行
-					StartCoroutine(Run(TrainingResult.Success));
-				});
-			}));
+					FadeManager.Instance.PlayFadeIn(() => 
+					{
+						// フェードが明けてから実行
+						StartCoroutine(Run(TrainingResult.Success));
+					});
+				}));
 		}
 
 		/// <summary>
@@ -60,9 +62,9 @@ namespace Voxel.Training
 		/// </summary>
 		/// <param name="action"></param>
 		/// <returns></returns>
-		private IEnumerator LoadAdditiveSceneAsync(Action action = null)
+		private IEnumerator LoadAdditiveSceneAsync(TrainingType type, Action action = null)
 		{
-			var asyncOperation = SceneManager.LoadSceneAsync("Domino", LoadSceneMode.Additive);
+			var asyncOperation = SceneManager.LoadSceneAsync(type.ToString(), LoadSceneMode.Additive);
 			while (!asyncOperation.isDone)
 			{
 				yield return null;

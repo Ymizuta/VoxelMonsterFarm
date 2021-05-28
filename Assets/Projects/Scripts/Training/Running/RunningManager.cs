@@ -50,7 +50,13 @@ namespace Voxel.Training
 			var target = passPoints[passIdx].position;
 			var distance = Vector3.Distance(target, runner.transform.position);
 			int junpCount = (int)( distance/ jumpDistance);
+
+			// モンスターの位置等を修正
+			var pos = runner.transform.position;
+			pos.y = 0;
+			runner.transform.position = pos;
 			runner.transform.LookAt(target);
+
 			tween = runner.transform.DOJump(passPoints[passIdx].position, 2f, junpCount, distance / speed)
 				.SetEase(Ease.Linear)
 				.OnComplete(() => 

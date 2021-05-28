@@ -30,16 +30,17 @@ namespace Voxel.Farm
 		public enum TrainingMenu
 		{
 			Running = 0, // ‘–‚è‚İ
-			ObstacleCourse, // áŠQ•¨ƒR[ƒX
-			Swimming, // …‰j
-			Meditation, // áÒ‘z
-			DestroyObstacle, // áŠQ•¨”j‰ó
+			Domino, // ƒhƒ~ƒm“|‚µ
+			Shooting, // Ë“I
+			Studying, // •×‹­
+			AvoidRock, // Šâ”ğ‚¯
+			LogShock, // ŠÛ‘¾ó‚¯
 		}
 
 		public ReactiveProperty<CommandType> Command = new ReactiveProperty<CommandType>();
 
 		public readonly string[] FarmTopMenuStrs = new string[] { "ˆç¬", "‹x—{", "‘å‰ï", "”\—Í’l"};
-		public readonly string[] TrainingMenuStrs = new string[] { "‘–‚è‚İ", "áŠQ•¨", "…‰j", "áÒ‘z", "‘ÅŒ‚ŒP—û"};
+		public readonly string[] TrainingMenuStrs = new string[] { "‘–‚è‚İ", "ƒhƒ~ƒm“|‚µ", "‚µ‚á‚Ä‚«", "–Ò•×‹­", "‹Î”ğ‚¯", "ŠÛ‘¾ó‚¯" };
 
 		public MonsterParam MonsterParam { get; private set; }
 

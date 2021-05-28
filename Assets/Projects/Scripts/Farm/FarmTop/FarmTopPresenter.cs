@@ -193,24 +193,32 @@ namespace Voxel.Farm
 		{
 			var type = (FarmTopModel.TrainingMenu)selectIdx;
 			var sceneName = SceneLoader.SceneName.Training;
+			var menu = Training.TrainingType.Running; 
 			switch (type)
 			{
 				case FarmTopModel.TrainingMenu.Running:
-					//sceneName = SceneLoader.SceneName.Running;
+					menu = Training.TrainingType.Running;
 					break;
-				case FarmTopModel.TrainingMenu.Swimming:
+				case FarmTopModel.TrainingMenu.Shooting:
+					menu = Training.TrainingType.Shooting;
 					break;
-				case FarmTopModel.TrainingMenu.ObstacleCourse:
+				case FarmTopModel.TrainingMenu.Domino:
+					menu = Training.TrainingType.Domino;
 					break;
-				case FarmTopModel.TrainingMenu.Meditation:
+				case FarmTopModel.TrainingMenu.Studying:
+					menu = Training.TrainingType.Studying;
 					break;
-				case FarmTopModel.TrainingMenu.DestroyObstacle:
+				case FarmTopModel.TrainingMenu.AvoidRock:
+					menu = Training.TrainingType.AvoidRock;
+					break;
+				case FarmTopModel.TrainingMenu.LogShock:
+					menu = Training.TrainingType.LogShock;
 					break;
 				default:
 					Debug.LogWarning("想定していないタイプが選択されました type =" + type);
 					break;
 			}
-			FadeManager.Instance.PlayFadeOut(() => SceneLoader.Instance.ChangeScene(sceneName));
+			FadeManager.Instance.PlayFadeOut(() => SceneLoader.Instance.ChangeScene(sceneName, new Training.TrainingSceneData(menu)));
 		}
 
 		/// <summary>
