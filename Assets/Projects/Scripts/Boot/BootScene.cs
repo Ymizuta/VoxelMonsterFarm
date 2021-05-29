@@ -20,7 +20,10 @@ namespace Voxel.Boot
 			{
 				DontDestroyOnLoad(dontDestroyObjects[i].gameObject);
 			}
-			SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Farm);
+			Voxel.UI.FadeManager.Instance.PlayFadeOut(() => 
+			{
+				SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Farm);
+			});
 		}
 	}
 }
