@@ -11,6 +11,7 @@ namespace Voxel.Training
 		[SerializeField] private Transform[] shootTrans;
 		[SerializeField] private Transform[] targets;
 		[SerializeField] private GameObject[] bullets;
+		[SerializeField] private ParticleSystem[] hitEffects;
 		private bool[] isHit;
 		private bool IsFinished { get
 			{
@@ -50,6 +51,7 @@ namespace Voxel.Training
 							.OnComplete(() => 
 							{
 								// ’e‚ğÁ‚·
+								hitEffects[idx].Play();
 								bullets[idx].gameObject.SetActive(false);
 								isHit[idx] = true;
 							});

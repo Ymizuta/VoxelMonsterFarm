@@ -18,6 +18,7 @@ namespace Voxel.Training
 			yield return base.Run(result);
 			controller.Run();
 			monster.transform.DOJump(goal.position, 1f, (int)Vector3.Distance(goal.position, monster.transform.position) / 1,  10f)
+				.SetEase(Ease.Linear)
 				.OnComplete(() => 
 				{
 					isFinished = true;
