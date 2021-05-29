@@ -32,11 +32,14 @@ namespace Voxel.Tournament
 		public bool IsPlayerTurn { get; set; } // プレイヤー選択中
 		public bool IsAbstentionNextMatch = false; // 次の試合を棄権
 		public bool IsAbstentionTournament = false; // 大会を棄権
-
+		// 順番が回ってきたモンスターのインデックス
 		public int CurrentMonsterIdx { get { return TournamentCommonModel.Instance.MatchOrderList[TournamentCommonModel.Instance.CurrentRotationMatchIdx]; } }
 		public int CounterMonsterIdx { get { return 
 					TournamentCommonModel.Instance.MatchOrderList[TournamentCommonModel.Instance.CurrentRotationMatchIdx 
 					+ TournamentCommonModel.Instance.MatchOrderList.Count / 2]; } }
+		// 順番が回ってきたモンスターのパラメータ
+		public TournamentMonsterParam CurrentMonsterParam => TournamentCommonModel.Instance.GetMonsterParam(CurrentMonsterIdx);
+		public TournamentMonsterParam CounterMonsterParam => TournamentCommonModel.Instance.GetMonsterParam(CounterMonsterIdx);
 
 		public bool IsOperatable { get
 			{

@@ -17,6 +17,8 @@ namespace Voxel.Tournament
 	/// </summary>
 	public class TournamentCommonModel : SingletonMonoBehaviour<TournamentCommonModel>
 	{
+		public string TournamentName { get; private set; }
+
 		public TournamentMonsterParam[] MonsterParams { get; set; } = new TournamentMonsterParam[]
 			{
 				new TournamentMonsterParam("イッヌ", 100, 30, 30, 25, 20, 45),
@@ -25,8 +27,8 @@ namespace Voxel.Tournament
 				new TournamentMonsterParam("トッリ", 100, 30, 30, 25, 20, 45),
 				new TournamentMonsterParam("ブッタ", 100, 30, 30, 25, 20, 45),
 				new TournamentMonsterParam("ヒツッジ", 100, 30, 30, 25, 20, 45),
-				new TournamentMonsterParam("ヤッギ", 100, 30, 30, 25, 20, 45),
-				new TournamentMonsterParam("ドラゴン", 100, 30, 30, 25, 20, 45),
+				//new TournamentMonsterParam("ヤッギ", 100, 30, 30, 25, 20, 45),
+				//new TournamentMonsterParam("ドラゴン", 100, 30, 30, 25, 20, 45),
 			};
 
 		public ResultType[][] Results { get; private set; }
@@ -38,6 +40,7 @@ namespace Voxel.Tournament
 
 		public void Initialize()
 		{
+			TournamentName = "プロトタイプ杯";
 			InitResult();
 			InitMatchOrderList();
 		}

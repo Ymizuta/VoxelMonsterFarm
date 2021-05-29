@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Voxel.UI;
 using UniRx;
+using DG.Tweening;
 using Voxel.Tournament;
 
 namespace Voxel.Battle
@@ -11,6 +13,8 @@ namespace Voxel.Battle
 	{
 		[SerializeField] BattleMonsterStatusUI[] statusUis;
 		[SerializeField] BattleCommandMenu menu;
+		[SerializeField] Camera mainCamera;
+		[SerializeField] Camera subCamera;
 
 		BattleMonsterParam currentMonster;
 		BattleMonsterParam counterMonster;
@@ -28,22 +32,41 @@ namespace Voxel.Battle
 			menu.Initialize(new string[] { "攻撃", "溜める", "防御" });
 			commandProcess.Initialize(menu);
 			excuteBattleProcess = this.gameObject.GetComponent<ExcuteBattleProcess>();
-			// メインループを開始
-			StartStateMachine();
-		}
-
-		public void StartStateMachine()
-		{
-			StartCoroutine(BattleMainProcess());
-		}
-
-		private IEnumerator BattleMainProcess()
-		{
 			statusUis[0].SetData(currentMonster);
 			statusUis[1].SetData(counterMonster);
+			// メインループを開始
+			FadeManager.Instance.PlayFadeIn(() => 
+			{
+				StartCoroutine(Process());
+			});
+		}
 
+		private IEnumerator Process()
+		{
+			yield return BeforeBattleProcess();
 			yield return BattleProcess(currentMonster, counterMonster);
 			yield return EndBattleProcess();
+		}
+
+		/// <summary>
+		/// 試合開始前の演出等を行う
+		/// </summary>
+		private IEnumerator BeforeBattleProcess()
+		{
+			var isDone = false;
+			mainCamera.gameObject.SetActive(false);
+			subCamera.gameObject.SetActive(true);
+			subCamera.transform.DOMove(subCamera.transform.position + new Vector3(0f, 0f, -4f), 2f)
+				.OnComplete(() =>
+				{
+					isDone = true;
+				});
+			yield return new WaitUntil(() => isDone);
+			yield return new WaitForSeconds(2f);
+			Comment.Instance.Show("試合開始！");
+			yield return new WaitForSeconds(1f);
+			subCamera.gameObject.SetActive(false);
+			mainCamera.gameObject.SetActive(true);
 		}
 
 		private IEnumerator BattleProcess(BattleMonsterParam myMonster, BattleMonsterParam enemyMonster)

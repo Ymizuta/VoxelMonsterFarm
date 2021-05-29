@@ -41,7 +41,7 @@ namespace Voxel.Tournament
 					// バトルSceneから戻ってきた
 					var resultData = (TournamentSceneData)data;
 					Model.SetResult(resultData.WinMonsterIdx, resultData.LoseMonsterIdx);
-					Debug.Log($"{TournamentCommonModel.Instance.MonsterParams[resultData.WinMonsterIdx].MonsterName}が勝利！{TournamentCommonModel.Instance.MonsterParams[resultData.LoseMonsterIdx].MonsterName}敗れました！");
+					Comment.Instance.Show($"{TournamentCommonModel.Instance.MonsterParams[resultData.WinMonsterIdx].MonsterName}が勝利！{TournamentCommonModel.Instance.MonsterParams[resultData.LoseMonsterIdx].MonsterName}敗れました！");
 					View.Board.UpdateBoard();
 					// ローテーションを更新
 					Model.IncrementMatchIdx();
@@ -52,7 +52,8 @@ namespace Voxel.Tournament
 				}
 				else
 				{
-					StartCoroutine(TournamentProcess());
+					// トーナメントの開始
+					StartCoroutine(StartTournamentCoroutine());
 				}
 			});
 		}
@@ -61,6 +62,17 @@ namespace Voxel.Tournament
 		{
 			base.OnBack();
 			setEventsDisposable.Dispose();
+			Comment.Instance.Hide();
+		}
+
+		private IEnumerator StartTournamentCoroutine()
+		{
+			yield return new WaitForSeconds(2f);
+			Comment.Instance.Show($"これより{GameCommonModel.Instance.Month}月{GameCommonModel.Instance.Month}週の{TournamentCommonModel.Instance.TournamentName}を開催します！");
+			yield return new WaitForSeconds(3f);
+			Comment.Instance.Show($"上位グレードへの昇格を目指して頑張ってください！！");
+			yield return new WaitForSeconds(3f);
+			yield return TournamentProcess();
 		}
 
 		/// <summary>
@@ -73,7 +85,7 @@ namespace Voxel.Tournament
 			if (Model.IsEndTournament())
 			{
 				// 優勝判定
-				Debug.Log($"{Model.GetTournamentWinner().MonsterName}　が優勝しました!!");
+				Comment.Instance.Show($"{Model.GetTournamentWinner().MonsterName}　選手が優勝しました!!");
 				yield break;
 			}
 
@@ -86,6 +98,7 @@ namespace Voxel.Tournament
 				Model.IsAbstentionNextMatch = false;
 				if (!Model.IsAbstentionTournament)
 				{
+					Comment.Instance.Show($"続いて{Model.CurrentMonsterParam.MonsterName}選手と{Model.CounterMonsterParam.MonsterName}選手の試合です");
 					// プレイヤーの入力待ち
 					yield return TopMenuProcess();
 				}
@@ -112,8 +125,8 @@ namespace Voxel.Tournament
 
 			// 結果反映
 			View.Board.UpdateBoard();
-			//Comment.Instance.Show($"{TournamentCommonModel.Instance.MonsterParams[winnerIdx].MonsterName}が勝利！{TournamentCommonModel.Instance.MonsterParams[loserIdx].MonsterName}敗れました！");
-			Debug.Log($"{TournamentCommonModel.Instance.MonsterParams[winnerIdx].MonsterName}が勝利！{TournamentCommonModel.Instance.MonsterParams[loserIdx].MonsterName}敗れました！");
+			Comment.Instance.Show($"{TournamentCommonModel.Instance.MonsterParams[winnerIdx].MonsterName}が勝利！{TournamentCommonModel.Instance.MonsterParams[loserIdx].MonsterName}敗れました！");
+			//Debug.Log($"{TournamentCommonModel.Instance.MonsterParams[winnerIdx].MonsterName}が勝利！{TournamentCommonModel.Instance.MonsterParams[loserIdx].MonsterName}敗れました！");
 			yield return new WaitForSeconds(1f);
 
 			// 再起処理
@@ -138,10 +151,13 @@ namespace Voxel.Tournament
 						case TournamentModel.TopMenuType.Match:
 							YesNoPopup.Instance.Show(() => 
 							{
-								OnBack();
-								View.TopMenu.Hide();
-								var data = new Battle.BattleSceneData(Model.CurrentMonsterIdx, Model.CounterMonsterIdx);
-								SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Battle, data);
+								FadeManager.Instance.PlayFadeOut(() => 
+								{
+									OnBack();
+									View.TopMenu.Hide();
+									var data = new Battle.BattleSceneData(Model.CurrentMonsterIdx, Model.CounterMonsterIdx);
+									SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Battle, data);
+								});
 							}, () => { }, "試合を開始しますか？");
 							yield return new WaitUntil(() => Model.IsOperatable);
 							break;
