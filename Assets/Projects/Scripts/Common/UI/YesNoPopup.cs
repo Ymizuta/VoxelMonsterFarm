@@ -13,6 +13,8 @@ namespace Voxel.UI
 		[SerializeField] private Transform yesButton;
 		[SerializeField] private Transform noButton;
 		[SerializeField] private Text popupComment;
+		private Color unSelectedColor = new Color(132f / 255f, 0f / 255f, 0f / 255f, 255f / 255f);
+		private Color selectedColor = Color.white;
 
 		private ReactiveProperty<bool> isYesSelected; // Yesƒ{ƒ^ƒ“‚ð‘I‘ð‚µ‚Ä‚¢‚é‚©
 		private CompositeDisposable disposable;
@@ -70,13 +72,13 @@ namespace Voxel.UI
 				{
 					if (x)
 					{
-						yesButton.GetComponentInChildren<Text>().color = Color.yellow;
-						noButton.GetComponentInChildren<Text>().color = Color.white;
+						yesButton.GetComponentInChildren<Text>().color = selectedColor;
+						noButton.GetComponentInChildren<Text>().color = unSelectedColor;
 					}
 					else
 					{
-						yesButton.GetComponentInChildren<Text>().color = Color.white;
-						noButton.GetComponentInChildren<Text>().color = Color.yellow;
+						yesButton.GetComponentInChildren<Text>().color = unSelectedColor;
+						noButton.GetComponentInChildren<Text>().color = selectedColor;
 					}
 				}).AddTo(disposable);
 
