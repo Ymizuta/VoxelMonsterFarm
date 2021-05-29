@@ -87,15 +87,18 @@ namespace Voxel.Farm
 		{
 			// 決定
 			InputManager.Instance.OnSpaceKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ =>
 				{
 					OnDecideFarmTopMenu((FarmTopModel.FarmTopMenu)View.FarmTopMenu.CurrentIdx.Value);
 				}).AddTo(setEventsDisposable);
 			// カーソルを上に移動
 			InputManager.Instance.OnUpKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ => View.FarmTopMenu.SelectUp()).AddTo(setEventsDisposable);
 			// カーソルを下に移動
 			InputManager.Instance.OnDownKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ => View.FarmTopMenu.SelectDown()).AddTo(setEventsDisposable);
 		}
 
@@ -106,13 +109,14 @@ namespace Voxel.Farm
 		{
 			// メニュー選択
 			InputManager.Instance.OnSpaceKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ =>
 				{
-					OnBack();
 					OnDecideTrainingMenu(View.TrainingMenu.CurrentIdx.Value);
 				}).AddTo(setEventsDisposable);
 			// 戻る
 			InputManager.Instance.OnBKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ =>
 				{
 					View.TrainingMenu.Hide();
@@ -120,15 +124,19 @@ namespace Voxel.Farm
 				}).AddTo(setEventsDisposable);
 			// カーソルを上に移動
 			InputManager.Instance.OnUpKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ => View.TrainingMenu.SelectUp()).AddTo(setEventsDisposable);
 			// カーソルを下に移動
 			InputManager.Instance.OnDownKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ => View.TrainingMenu.SelectDown()).AddTo(setEventsDisposable);
 			// カーソルを左に移動
 			InputManager.Instance.OnLeftKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ => View.TrainingMenu.SelectLeft()).AddTo(setEventsDisposable);
 			// カーソルを右に移動
 			InputManager.Instance.OnRightKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ => View.TrainingMenu.SelectRight()).AddTo(setEventsDisposable);
 		}
 
@@ -139,6 +147,7 @@ namespace Voxel.Farm
 		{
 			// 戻る
 			InputManager.Instance.OnBKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ =>
 				{
 					View.MonsterParamWindow.Hide();
@@ -156,7 +165,7 @@ namespace Voxel.Farm
 			{
 				case FarmTopModel.FarmTopMenu.TakeRest:
 					// 休養を取る
-					FarmCalendarManager.Instance.NextWeek();
+					YesNoPopup.Instance.Show(() => FarmCalendarManager.Instance.NextWeek(), () => { }, "今週は休養にしますか？");
 					break;
 				case FarmTopModel.FarmTopMenu.Training:
 					// トレーニングに移動
@@ -166,12 +175,15 @@ namespace Voxel.Farm
 					View.TrainingMenu.Show();
 					break;
 				case FarmTopModel.FarmTopMenu.Tournament:
-					FadeManager.Instance.PlayFadeOut(() => 
+					YesNoPopup.Instance.Show(() =>
 					{
-						Comment.Instance.Hide();
-						SceneLoader.Instance.ChangeScene(SceneManagement.SceneLoader.SceneName.Tournament);
-						OnBack();
-					});
+						FadeManager.Instance.PlayFadeOut(() =>
+						{
+							Comment.Instance.Hide();
+							SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Tournament);
+							OnBack();
+						});
+					}, () => { }, "大会に参加しますか？");
 					break;
 				case FarmTopModel.FarmTopMenu.Params:
 					Comment.Instance.Hide();
@@ -218,7 +230,11 @@ namespace Voxel.Farm
 					Debug.LogWarning("想定していないタイプが選択されました type =" + type);
 					break;
 			}
-			FadeManager.Instance.PlayFadeOut(() => SceneLoader.Instance.ChangeScene(sceneName, new Training.TrainingSceneData(menu)));
+			YesNoPopup.Instance.Show(() =>
+			{
+				OnBack();
+				FadeManager.Instance.PlayFadeOut(() => SceneLoader.Instance.ChangeScene(sceneName, new Training.TrainingSceneData(menu)));
+			}, () => { }, "トレーニングを始めますか？");
 		}
 
 		/// <summary>

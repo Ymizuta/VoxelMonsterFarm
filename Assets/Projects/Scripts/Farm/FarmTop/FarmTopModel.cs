@@ -43,6 +43,10 @@ namespace Voxel.Farm
 		public readonly string[] TrainingMenuStrs = new string[] { "‘–‚è‚İ", "ƒhƒ~ƒm“|‚µ", "‚µ‚á‚Ä‚«", "–Ò•×‹­", "‹Î”ğ‚¯", "ŠÛ‘¾ó‚¯" };
 
 		public MonsterParam MonsterParam { get; private set; }
+		public bool IsOperatable { get
+			{
+				return !GameCommonModel.Instance.IsPopupShowed;
+			} }
 
 		public override void Initialize()
 		{

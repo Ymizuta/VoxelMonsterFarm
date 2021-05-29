@@ -11,6 +11,9 @@ namespace Voxel
 		public ReactiveProperty<int> Month { get; set; } = new ReactiveProperty<int>();
 		public ReactiveProperty<int> Week { get; set; } = new ReactiveProperty<int>();
 
+		// êßå‰ä÷òA
+		public bool IsPopupShowed { get; set; } = false;
+
 		public void SetCalendar()
 		{
 			Year.Value = SaveDataManager.SaveData.Year;
