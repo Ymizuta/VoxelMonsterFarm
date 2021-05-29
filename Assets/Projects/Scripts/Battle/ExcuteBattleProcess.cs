@@ -27,8 +27,18 @@ namespace Voxel.Battle
 			// todo s“®‡‚ðŒˆ‚ß‚é
 			var myMonster = monsters[0];
 			var enemy = monsters[1];
+			// todo ˆ—‚ðŒã‚ÅŒ©’¼‚·
+			// ‘f‘‚³‡
 			if (myMonster.Speed.Value >= enemy.Speed.Value) orderArray = new int[] { 0,1};
 			else if(myMonster.Speed.Value < enemy.Speed.Value) orderArray = new int[] { 1, 0 };
+			// –hŒä‚µ‚Ä‚¢‚é‚È‚çæU
+			if (commands[orderArray[0]].command != BattleCommand.Guard && commands[orderArray[1]].command == BattleCommand.Guard)
+			{
+				// “ü‚ê‘Ö‚¦
+				var later = orderArray[0];
+				orderArray[0] = orderArray[1];
+				orderArray[1] = later;
+			}
 
 			// ƒLƒ…[ŽÀs
 			for (int i = 0; i < orderArray.Length; i++)
