@@ -38,6 +38,11 @@ namespace Voxel.Tournament
 					TournamentCommonModel.Instance.MatchOrderList[TournamentCommonModel.Instance.CurrentRotationMatchIdx 
 					+ TournamentCommonModel.Instance.MatchOrderList.Count / 2]; } }
 
+		public bool IsOperatable { get
+			{
+				return !GameCommonModel.Instance.IsPopupShowed;
+			} }
+
 		public override void Initialize()
 		{
 			base.Initialize();

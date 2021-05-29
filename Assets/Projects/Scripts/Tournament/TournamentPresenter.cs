@@ -136,21 +136,45 @@ namespace Voxel.Tournament
 					{
 						// 試合
 						case TournamentModel.TopMenuType.Match:
-							OnBack();
-							View.TopMenu.Hide();
-							var data = new Battle.BattleSceneData(Model.CurrentMonsterIdx, Model.CounterMonsterIdx);
-							SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Battle, data);
+							YesNoPopup.Instance.Show(() => 
+							{
+								OnBack();
+								View.TopMenu.Hide();
+								var data = new Battle.BattleSceneData(Model.CurrentMonsterIdx, Model.CounterMonsterIdx);
+								SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Battle, data);
+							}, () => { }, "試合を開始しますか？");
+							yield return new WaitUntil(() => Model.IsOperatable);
 							break;
 						// 試合を棄権
 						case TournamentModel.TopMenuType.AbstentionNextMatch:
-							Model.IsAbstentionNextMatch = true;
-							View.TopMenu.Hide();
-							yield break;
+							bool isYes = false;
+							YesNoPopup.Instance.Show(() => { isYes = true;}, ()=> { isYes = false;}, "次の試合を棄権しますか？");
+							yield return new WaitUntil(() => Model.IsOperatable);
+							if (isYes)
+							{
+								Model.IsAbstentionNextMatch = true;
+								View.TopMenu.Hide();
+								yield break;
+							}
+							else
+							{
+								break;
+							}
 						// 大会を棄権
 						case TournamentModel.TopMenuType.AbstentionTournament:
-							Model.IsAbstentionTournament = true;
-							View.TopMenu.Hide();
-							yield break;
+							isYes = false;
+							YesNoPopup.Instance.Show(() => { isYes = true; }, () => { isYes = false; }, "大会を棄権しますか？");
+							yield return new WaitUntil(() => Model.IsOperatable);
+							if (isYes)
+							{
+								Model.IsAbstentionTournament = true;
+								View.TopMenu.Hide();
+								yield break;
+							}
+							else
+							{
+								break;
+							}
 						default:
 							break;
 					}
