@@ -6,6 +6,44 @@ namespace Voxel.Battle
 {
 	public class PlayerCommandProcess : MonoBehaviour
 	{
+		BattleCommandMenu menu;
+
+		public void Initialize(BattleCommandMenu menu)
+		{
+			this.menu = menu;
+		}
+
+		public IEnumerator PlayerProcess(BattleMonsterParam param, CommandParam commandParam)
+		{
+			menu.Show();
+			while (true)
+			{
+				yield return null;
+				if (Input.GetKeyDown(KeyCode.Space))
+				{
+					menu.Hide();
+					commandParam.command = (BattleCommand)menu.CurrentIdx.Value;
+					yield break;
+				}
+				else if (Input.GetKeyDown(KeyCode.UpArrow))
+				{
+					menu.SelectUp();
+				}
+				else if (Input.GetKeyDown(KeyCode.DownArrow))
+				{
+					menu.SelectDown();
+				}
+				else if (Input.GetKeyDown(KeyCode.LeftArrow))
+				{
+					menu.SelectLeft();
+				}
+				else if (Input.GetKeyDown(KeyCode.RightArrow))
+				{
+					menu.SelectRight();
+				}
+			}
+		}
+
 		public IEnumerator StartProcess(BattleMonsterParam param, CommandParam commandParam)
 		{
 			yield return null;

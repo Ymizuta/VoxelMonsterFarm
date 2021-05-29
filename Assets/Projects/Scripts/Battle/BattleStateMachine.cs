@@ -10,6 +10,7 @@ namespace Voxel.Battle
 	public class BattleStateMachine : MonoBehaviour
 	{
 		[SerializeField] BattleMonsterStatusUI[] statusUis;
+		[SerializeField] BattleCommandMenu menu;
 
 		BattleMonsterParam currentMonster;
 		BattleMonsterParam counterMonster;
@@ -22,6 +23,12 @@ namespace Voxel.Battle
 			var converter = new TournamentBattleParamConvertor();
 			currentMonster = converter.ConvertTournamentParamToBattleParam(battleData.CurrentMonsterIdx, TournamentCommonModel.Instance.GetMonsterParam(battleData.CurrentMonsterIdx));
 			counterMonster = converter.ConvertTournamentParamToBattleParam(battleData.CounterMonsterIdx, TournamentCommonModel.Instance.GetMonsterParam(battleData.CounterMonsterIdx));
+			// プロセス管理クラスの初期化
+			commandProcess = this.gameObject.AddComponent<PlayerCommandProcess>();
+			menu.Initialize(new string[] { "攻撃", "溜める", "防御" });
+			commandProcess.Initialize(menu);
+			excuteBattleProcess = this.gameObject.GetComponent<ExcuteBattleProcess>();
+			// メインループを開始
 			StartStateMachine();
 		}
 
@@ -32,8 +39,6 @@ namespace Voxel.Battle
 
 		private IEnumerator BattleMainProcess()
 		{
-			commandProcess = this.gameObject.AddComponent<PlayerCommandProcess>();
-			excuteBattleProcess = this.gameObject.GetComponent<ExcuteBattleProcess>();
 			statusUis[0].SetData(currentMonster);
 			statusUis[1].SetData(counterMonster);
 
@@ -45,7 +50,7 @@ namespace Voxel.Battle
 		{
 			// プレイヤーの操作→行動を決める
 			var myCommandParam = new CommandParam();
-			yield return commandProcess.StartProcess(myMonster, myCommandParam);
+			yield return commandProcess.PlayerProcess(myMonster, myCommandParam);
 
 			// 敵の行動を決める
 			var enemyCommandParam = new CommandParam();
