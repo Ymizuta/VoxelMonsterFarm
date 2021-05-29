@@ -14,7 +14,7 @@ namespace Voxel.Common
 		[SerializeField] private MenuItemBase itemPrefab;
 		[SerializeField, Range(1, 3)] private int columnCount;
 		[SerializeField] private Transform itemParent;
-		[SerializeField] private GameObject bgObject;
+		[SerializeField] private GameObject bg;
 		private MenuItemBase[] items;
 		private string[] itemStrs; // ‘I‘ğ€–Ú‚Ì•¶š—ñ
 		private bool isCreate;
@@ -42,14 +42,14 @@ namespace Voxel.Common
 		public virtual void Show()
 		{
 			if (!isCreate) Create();
-			if (bgObject != null) bgObject.SetActive(true);
+			if (bg != null) bg.SetActive(true);
 			itemParent.gameObject.SetActive(true);
 			Bind();
 		}
 
 		public virtual void Hide()
 		{
-			if (bgObject != null) bgObject.SetActive(false);
+			if (bg != null) bg.SetActive(false);
 			itemParent.gameObject.SetActive(false);
 			disposable.Dispose();
 		}
