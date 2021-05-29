@@ -69,7 +69,7 @@ namespace Voxel.Battle
 					yield return ExecuteGuardCoroutine();
 					break;
 				case BattleCommand.Charge:
-					yield return ExecuteChargeCoroutine();
+					yield return ExecuteChargeCoroutine(monsterObj);
 					break;
 			}
 			yield return ExcuteAction(param, command, targetParam, targetCommand);
@@ -88,7 +88,7 @@ namespace Voxel.Battle
 					monster.ReduceGuts();
 					var damage = CalcDamage(monster, command, target, targetCommand);
 					target.AddDamage(damage);
-					Comment.Instance.Show($"{target.MonsterName}に{damage}のダメージ! 残り体力{target.HP.Value}");
+					Comment.Instance.Show($"{target.MonsterName}に<color=#ff0000>{damage}</color>のダメージ! 残り体力は{target.HP.Value}");
 					break;
 				case BattleCommand.Charge:
 					monster.Charge();
@@ -99,7 +99,7 @@ namespace Voxel.Battle
 					Comment.Instance.Show($"{monster.MonsterName}は身を守っている");
 					break;
 			}
-			//yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(1f);
 			yield return null;
 		}
 
@@ -173,8 +173,9 @@ namespace Voxel.Battle
 			yield return null;
 		}
 
-		private IEnumerator ExecuteChargeCoroutine()
+		private IEnumerator ExecuteChargeCoroutine(GameObject monsterObj)
 		{
+			monsterObj.GetComponent<BattleMonsterEffects>().PlayCharge();
 			yield return null;
 		}
 	}
@@ -220,6 +221,7 @@ namespace Voxel.Battle
 		public void Excute()
 		{
 			receiverObject.GetComponent<Animator>().Play("Damaged");
+			receiverObject.GetComponent<BattleMonsterEffects>().PlayAttacked();
 		}
 	}
 }

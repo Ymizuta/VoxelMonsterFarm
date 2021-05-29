@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Voxel.UI;
 
 namespace Voxel.Battle
 {
@@ -15,6 +16,7 @@ namespace Voxel.Battle
 
 		public IEnumerator PlayerProcess(BattleMonsterParam param, CommandParam commandParam)
 		{
+			Comment.Instance.Show("どうする?");
 			menu.Show();
 			while (true)
 			{
