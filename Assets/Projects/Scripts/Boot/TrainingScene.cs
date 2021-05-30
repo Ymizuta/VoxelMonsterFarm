@@ -49,9 +49,10 @@ namespace Voxel.Training
 			var monsterparam = SaveDataManager.SaveData.CurrentMonster;
 			resultUi.ShowParam(monsterparam, addVal);
 			UpdateMonsterParam(monsterparam, addVal);
+			Comment.Instance.Show(GetResultComment(addVal));
 
 			// “ü—Í‚ð‘Ò‚Á‚Ä–qê‚É–ß‚é
-			yield return new WaitForSeconds(1f);
+			yield return PlayerInput();
 			CalendarManager.Instance.NextWeek();
 			FadeManager.Instance.PlayFadeOut(() => SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Farm));
 		}
@@ -112,6 +113,15 @@ namespace Voxel.Training
 			param.Speed += addVal[(int)ParamType.Speed];
 			param.Deffence += addVal[(int)ParamType.Deffence];
 			param.Fatigue += Common.GameSettingProvidor.Instance.TrainingFatigue;
+		}
+
+		private IEnumerator PlayerInput()
+		{
+			while (true)
+			{
+				yield return null;
+				if (Input.GetKeyDown(KeyCode.Space)) break;
+			}
 		}
 	}
 }

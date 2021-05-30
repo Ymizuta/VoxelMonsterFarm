@@ -22,7 +22,7 @@ namespace Voxel.Training
 			addValText.text = addVal.ToString();
 			beforeValText.text = beforeVal.ToString();
 			afterValText.text = (beforeVal + addVal).ToString();
-			sliderCol.color = GetParamColor(type);
+			//sliderCol.color = GetParamColor(type);
 		}
 
 		private Color GetParamColor(ParamType type)
