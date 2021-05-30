@@ -7,6 +7,7 @@ namespace Voxel.Farm
 {
 	public class FarmTopView : ViewBase
 	{
+		private TournamentSchedule schedule;
 		private FarmTopMenu farmTopMenu;
 		private TrainingMenu trainingMenu;
 		private MonsterParamWindow monsterParamWindow;
@@ -15,6 +16,7 @@ namespace Voxel.Farm
 		public FarmTopMenu FarmTopMenu => farmTopMenu;
 		public TrainingMenu TrainingMenu => trainingMenu;
 		public MonsterParamWindow MonsterParamWindow => monsterParamWindow;
+		public TournamentSchedule TournamentSchedule => schedule;
 
 		public override IEnumerator Initialize()
 		{
@@ -34,6 +36,8 @@ namespace Voxel.Farm
 			trainingMenu.Hide();
 			monsterParamWindow.Initialize(param);
 			monsterParamWindow.Hide();
+			schedule.Initialize();
+			schedule.Hide();
 		}
 
 		private async void Load(Action action = null)
@@ -47,7 +51,10 @@ namespace Voxel.Farm
 			// ƒpƒ‰ƒ€
 			result = await AddressableManager.Instance.Load("Assets/Projects/AddressableAssets/Prefabs/UI/MonsterParamWindow.prefab");
 			monsterParamWindow = Instantiate(result, CanvasManager.Instance.BackCanvas.transform).GetComponent<MonsterParamWindow>();
-			action?.Invoke();
+			// —\’è•\
+			result = await AddressableManager.Instance.Load("Assets/Projects/AddressableAssets/Prefabs/UI/TournamentSchedule.prefab");
+			schedule = Instantiate(result, CanvasManager.Instance.BackCanvas.transform).GetComponent<TournamentSchedule>();
+			action?.Invoke();			
 		}
 
 		protected override void OnBack()

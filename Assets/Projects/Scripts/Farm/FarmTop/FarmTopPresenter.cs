@@ -52,6 +52,16 @@ namespace Voxel.Farm
 		{
 			Model.Command
 				.Subscribe(x =>OnChangeCommand(x)).AddTo(this);
+			// 予定表の更新
+			Model.SelectedGrade
+				.Where(_ => Model.Command.Value == FarmTopModel.CommandType.Schedule)
+				.Subscribe(_ => { View.TournamentSchedule.Select(Model.SelectedGrade.Value, Model.SelectedWeek.Value, Model.SelectedScheduleData); }).AddTo(this);
+			Model.SelectedWeek
+				.Where(_ => Model.Command.Value == FarmTopModel.CommandType.Schedule)
+				.Subscribe(_ => { View.TournamentSchedule.Select(Model.SelectedGrade.Value, Model.SelectedWeek.Value, Model.SelectedScheduleData); }).AddTo(this);
+			Model.SelectedMonth
+				.Where(_ => Model.Command.Value == FarmTopModel.CommandType.Schedule)
+				.Subscribe(_ => { View.TournamentSchedule.UpdateShedule(Model.SelectedMonth.Value, Model.ScheduleDatas); }).AddTo(this);
 		}
 
 		/// <summary>
@@ -60,7 +70,7 @@ namespace Voxel.Farm
 		/// <param name="type"></param>
 		private void OnChangeCommand(FarmTopModel.CommandType type)
 		{
-			if(setEventsDisposable != null) setEventsDisposable.Dispose();
+			if (setEventsDisposable != null) setEventsDisposable.Dispose();
 			setEventsDisposable = new CompositeDisposable();
 			switch (type)
 			{
@@ -74,6 +84,9 @@ namespace Voxel.Farm
 					break;
 				case FarmTopModel.CommandType.MonsterParam:
 					SetEventsMonsterParam();
+					break;
+				case FarmTopModel.CommandType.Schedule:
+					SetEventsTournamentSchedule();
 					break;
 				default:
 					break;
@@ -141,9 +154,55 @@ namespace Voxel.Farm
 		}
 
 		/// <summary>
+		/// 予定表の操作
+		/// </summary>
+		private void SetEventsTournamentSchedule()
+		{
+			// 大会選択
+			InputManager.Instance.OnSpaceKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
+				.Subscribe(_ =>
+				{
+					YesNoPopup.Instance.Show(() =>
+					{
+						FadeManager.Instance.PlayFadeOut(() =>
+						{
+							Comment.Instance.Hide();
+							SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Tournament);
+							OnBack();
+						});
+					}, () => { }, "この大会に参加しますか？");
+				}).AddTo(setEventsDisposable);
+			// 戻る
+			InputManager.Instance.OnBKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
+				.Subscribe(_ =>
+				{
+					View.TournamentSchedule.Hide();
+					OnReturnFarmTopMenu();
+				}).AddTo(setEventsDisposable);
+			// カーソルを上に移動
+			InputManager.Instance.OnUpKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
+				.Subscribe(_ => Model.SelectUpTournamentSchedule()).AddTo(setEventsDisposable);
+			// カーソルを下に移動
+			InputManager.Instance.OnDownKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
+				.Subscribe(_ => Model.SelectDownTournamentSchedule()).AddTo(setEventsDisposable);
+			// カーソルを左に移動
+			InputManager.Instance.OnLeftKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
+				.Subscribe(_ => Model.SelectLeftTournamentSchedule()).AddTo(setEventsDisposable);
+			// カーソルを右に移動
+			InputManager.Instance.OnRightKeyDownAsObservable
+				.Where(_ => Model.IsOperatable)
+				.Subscribe(_ => Model.SelectRightTournamentSchedule()).AddTo(setEventsDisposable);
+		}
+
+		/// <summary>
 		/// モンスターパラム
 		/// </summary>
-		public void SetEventsMonsterParam()
+		private void SetEventsMonsterParam()
 		{
 			// 戻る
 			InputManager.Instance.OnBKeyDownAsObservable
@@ -175,15 +234,12 @@ namespace Voxel.Farm
 					View.TrainingMenu.Show();
 					break;
 				case FarmTopModel.FarmTopMenu.Tournament:
-					YesNoPopup.Instance.Show(() =>
-					{
-						FadeManager.Instance.PlayFadeOut(() =>
-						{
-							Comment.Instance.Hide();
-							SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Tournament);
-							OnBack();
-						});
-					}, () => { }, "大会に参加しますか？");
+					Comment.Instance.Hide();
+					View.FarmTopMenu.Hide();
+					Model.Command.Value = FarmTopModel.CommandType.Schedule;
+					View.TournamentSchedule.Show(Model.SelectedMonth.Value, Model.ScheduleDatas);
+					// 選択カーソル初期化
+					View.TournamentSchedule.Select(Model.SelectedGrade.Value, Model.SelectedWeek.Value, Model.SelectedScheduleData);
 					break;
 				case FarmTopModel.FarmTopMenu.Params:
 					Comment.Instance.Hide();
