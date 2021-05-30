@@ -12,13 +12,13 @@ namespace Voxel.Tournament
 		public override void Show()
 		{
 			base.Show();
-			bgObject.SetActive(true);
+			//bgObject.SetActive(true);
 		}
 
 		public override void Hide()
 		{
 			base.Hide();
-			bgObject.SetActive(false);
+			//bgObject.SetActive(false);
 		}
 	}
 }
