@@ -7,12 +7,18 @@ namespace Voxel
 	[System.Serializable]
 	public class MonsterParam
 	{
+		private float fatigue;
+
 		public int MonseterId;
 		public string MonsterName { get; private set; }
 		public int LivingWeek { get; private set; }
 		public int RaceCount { get; set; }
 		public int WinCount { get; set; }
 		public int MonsterModelId { get; set; }
+		// 疲労度
+		public float Fatigue {
+			get { return fatigue; }
+			set { fatigue = Mathf.Clamp(value, 0, 100);} }
 		// パラメータ
 		public int Hp { get; set; } // ライフ
 		public int Power { get; set; } // ちから

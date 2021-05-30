@@ -111,6 +111,7 @@ namespace Voxel.Training
 			param.Hit += addVal[(int)ParamType.Hit];
 			param.Speed += addVal[(int)ParamType.Speed];
 			param.Deffence += addVal[(int)ParamType.Deffence];
+			param.Fatigue += Common.GameSettingProvidor.Instance.TrainingFatigue;
 		}
 	}
 }

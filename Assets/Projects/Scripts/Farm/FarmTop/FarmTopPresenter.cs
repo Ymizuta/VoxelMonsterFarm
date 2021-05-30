@@ -4,6 +4,7 @@ using UnityEngine;
 using UniRx;
 using Voxel.UI;
 using Voxel.SceneManagement;
+using Voxel.Common;
 
 namespace Voxel.Farm
 {
@@ -224,7 +225,11 @@ namespace Voxel.Farm
 			{
 				case FarmTopModel.FarmTopMenu.TakeRest:
 					// ‹x—{‚ğæ‚é
-					YesNoPopup.Instance.Show(() => FarmCalendarManager.Instance.NextWeek(), () => { }, "¡T‚Í‹x—{‚É‚µ‚Ü‚·‚©H");
+					YesNoPopup.Instance.Show(() => 
+					{
+						Model.MonsterParam.Fatigue -= GameSettingProvidor.Instance.TakeRestRemovedFatigue;
+						FarmCalendarManager.Instance.NextWeek();
+					}, () => { }, "¡T‚Í‹x—{‚É‚µ‚Ü‚·‚©H");
 					break;
 				case FarmTopModel.FarmTopMenu.Training:
 					// ƒgƒŒ[ƒjƒ“ƒO‚ÉˆÚ“®

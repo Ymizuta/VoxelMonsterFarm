@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Voxel.UI;
+using Voxel.Common;
 
 namespace Voxel.Farm
 {
@@ -86,13 +87,7 @@ namespace Voxel.Farm
 
 		public string GetInitComment()
 		{
-			var comments = new string[] 
-			{
-				"イッヌ は元気だよ！",
-				"イッヌ はすっごく元気だよ！",
-				"イッヌ は少し疲れてるみたい…",
-			};
-			return comments[UnityEngine.Random.Range(0,3)];
+			return new FarmCommentCalculator().GetConditionComment(MonsterParam.MonsterName, new MonsterCalculator().CalcCondition(MonsterParam.Fatigue));
 		}
 
 		#region Schedule
