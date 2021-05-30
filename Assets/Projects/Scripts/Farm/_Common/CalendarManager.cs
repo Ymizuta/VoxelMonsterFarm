@@ -19,6 +19,7 @@ namespace Voxel
 			{
 				GameCommonModel.Instance.Week.Value++;
 			}
+			SaveDataManager.Save();
 		}
 
 		private void NextMonth()

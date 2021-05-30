@@ -13,9 +13,17 @@ namespace Voxel
 
 		public static void Save()
 		{
+			SetData();
 			var jsonStr = JsonUtility.ToJson(SaveData);
 			PlayerPrefs.SetString(DefaultSaveKey, jsonStr);
 			PlayerPrefs.Save();
+		}
+
+		private static void SetData()
+		{
+			SaveData.Year = GameCommonModel.Instance.Year.Value;
+			SaveData.Month = GameCommonModel.Instance.Month.Value;
+			SaveData.Week = GameCommonModel.Instance.Week.Value;
 		}
 
 		public static void Load()
@@ -25,7 +33,7 @@ namespace Voxel
 			{
 				SaveData = SaveData.Default;
 				// デフォルトのモンスターを用意
-				SaveData.Monsters.Add(MonsterParam.Default);
+				SaveData.Wrapper.Monsters.Add(MonsterParam.Default);
 				SaveData.CurrentMonsterId = 1;
 			}
 			else
