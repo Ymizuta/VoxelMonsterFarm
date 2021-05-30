@@ -8,8 +8,10 @@ namespace Voxel.Common
 	{
 		[SerializeField] private MonsterModelMaster monsterModelMaster;
 		[SerializeField] private Entity_MonsterParamMaster monsterParamMaster;
+		[SerializeField] private Entity_TournamentMaster tournamentParamMater;
 
 		public MonsterModelMaster MonsterModelMaster => monsterModelMaster;
 		public Entity_MonsterParamMaster MonsterParamMaster => monsterParamMaster;
+		public Entity_TournamentMaster TournamentParamMater => tournamentParamMater;
 	}
 }

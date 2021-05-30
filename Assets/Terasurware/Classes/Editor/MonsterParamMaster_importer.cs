@@ -22,7 +22,7 @@ public class MonsterParamMaster_importer : AssetPostprocessor {
 			if (data == null) {
 				data = ScriptableObject.CreateInstance<Entity_MonsterParamMaster> ();
 				AssetDatabase.CreateAsset ((ScriptableObject)data, exportPath);
-				data.hideFlags = HideFlags.None;
+				data.hideFlags = HideFlags.NotEditable;
 			}
 			
 			data.sheets.Clear ();
@@ -54,12 +54,13 @@ public class MonsterParamMaster_importer : AssetPostprocessor {
 					cell = row.GetCell(1); p.monsterType = (int)(cell == null ? 0 : cell.NumericCellValue);
 					cell = row.GetCell(2); p.monsterName = (cell == null ? "" : cell.StringCellValue);
 					cell = row.GetCell(3); p.modelId = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(4); p.hp = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(5); p.power = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(6); p.guts = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(7); p.hit = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(8); p.speed = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(9); p.deffence = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(4); p.grade = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(5); p.hp = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(6); p.power = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(7); p.guts = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(8); p.hit = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(9); p.speed = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(10); p.deffence = (int)(cell == null ? 0 : cell.NumericCellValue);
 						s.list.Add (p);
 					}
 					data.sheets.Add(s);
