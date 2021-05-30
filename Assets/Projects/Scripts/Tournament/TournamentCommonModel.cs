@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Voxel.Common;
 
 namespace Voxel.Tournament
 {
@@ -21,14 +22,12 @@ namespace Voxel.Tournament
 
 		public TournamentMonsterParam[] MonsterParams { get; set; } = new TournamentMonsterParam[]
 			{
-				new TournamentMonsterParam("イッヌ", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Dog),
-				new TournamentMonsterParam("ネッコ", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Cat),
-				new TournamentMonsterParam("ウッシ", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Cow),
-				new TournamentMonsterParam("トッリ", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Chicken),
-				new TournamentMonsterParam("ブッタ", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Pig),
-				new TournamentMonsterParam("ライオン", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Lion),
-				//new TournamentMonsterParam("ヤッギ", 100, 30, 30, 25, 20, 45),
-				//new TournamentMonsterParam("ドラゴン", 100, 30, 30, 25, 20, 45),
+				new MonsterTournamentParamConvertor().ConvertMonsterParamToTournamentParam(SaveDataManager.SaveData.CurrentMonster),
+				MonsterParamMasterManager.GetTournamentParam(2),
+				MonsterParamMasterManager.GetTournamentParam(3),
+				MonsterParamMasterManager.GetTournamentParam(4),
+				MonsterParamMasterManager.GetTournamentParam(5),
+				MonsterParamMasterManager.GetTournamentParam(6),
 			};
 
 		public ResultType[][] Results { get; private set; }

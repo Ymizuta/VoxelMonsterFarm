@@ -17,7 +17,7 @@ namespace Voxel.Battle
 					tParam.Guts,
 					tParam.Diffence,
 					tParam.Speed,
-					tParam.Luck,
+					tParam.Hit,
 					tParam.MonsterModelId
 				);
 			return bParam;

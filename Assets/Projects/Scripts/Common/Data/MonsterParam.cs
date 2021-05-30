@@ -9,9 +9,9 @@ namespace Voxel
 	{
 		private float fatigue;
 
-		public int MonseterId;
-		public string MonsterName { get; private set; }
-		public int LivingWeek { get; private set; }
+		public int MonseterId { get; set; }
+		public string MonsterName { get; set; }
+		public int LivingWeek { get; set; }
 		public int RaceCount { get; set; }
 		public int WinCount { get; set; }
 		public int MonsterModelId { get; set; }
