@@ -13,7 +13,8 @@ namespace Voxel.Tournament
 			int guts,
 			int deffence,
 			int speed,
-			int luck)
+			int luck,
+			int monsterModelId)
 		{
 			this.MonsterName = name;
 			this.Hp = hp;
@@ -22,8 +23,8 @@ namespace Voxel.Tournament
 			this.Diffence = deffence;
 			this.Speed = speed;
 			this.Luck = luck;
+			this.MonsterModelId = monsterModelId;
 		}
-
 		public string MonsterName { get; private set; }
 		public int Hp { get; private set; }
 		public int Attack { get; private set; } // çUåÇóÕ
@@ -31,5 +32,6 @@ namespace Voxel.Tournament
 		public int Diffence { get; private set; } // ñhå‰óÕ
 		public int Speed { get; private set; } // ë¨ìx
 		public int Luck { get; private set; } // â^
+		public int MonsterModelId { get; private set; }
 	}
 }

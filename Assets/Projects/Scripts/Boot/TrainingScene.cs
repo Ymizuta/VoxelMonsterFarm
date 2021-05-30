@@ -35,9 +35,8 @@ namespace Voxel.Training
 		/// <returns></returns>
 		public IEnumerator Run(TrainingResult result)
 		{
-			//Comment.Instance.Show("ウッシ です");
-
 			// 練習シーンを取得・実行
+			manager.Initialize((int)MonsterModel.Dog);
 			yield return manager.Run(result);
 
 			// 制御が戻ったら結果発表

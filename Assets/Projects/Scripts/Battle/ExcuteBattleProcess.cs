@@ -7,18 +7,15 @@ namespace Voxel.Battle
 {
 	public class ExcuteBattleProcess : MonoBehaviour
 	{
-		[SerializeField] private GameObject myMonsterObject;
-		[SerializeField] private GameObject enemyMonsterObject;
-
 		private int[] orderArray = new int[2];
 		private GameObject[] monsterObjects;
 
-		private void Awake()
+		public void Initialize(GameObject myMonster, GameObject enemyMonster)
 		{
 			monsterObjects = new GameObject[]
 			{
-				myMonsterObject,
-				enemyMonsterObject,
+				myMonster,
+				enemyMonster,
 			};
 		}
 
@@ -75,7 +72,7 @@ namespace Voxel.Battle
 			yield return ExcuteAction(param, command, targetParam, targetCommand);
 			if (targetParam.IsDown())
 			{
-				yield return DownAnimationCoroutin(enemyMonsterObject);
+				yield return DownAnimationCoroutine(enemyObj);
 				yield break;
 			}
 		}
@@ -129,7 +126,7 @@ namespace Voxel.Battle
 			return damage;
 		}
 
-		private IEnumerator DownAnimationCoroutin(GameObject downMonster)
+		private IEnumerator DownAnimationCoroutine(GameObject downMonster)
 		{
 			var animator = downMonster.GetComponent<Animator>();
 			animator.Play("Down");

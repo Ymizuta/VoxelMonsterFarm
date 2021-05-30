@@ -12,6 +12,7 @@ namespace Voxel
 		public int LivingWeek { get; private set; }
 		public int RaceCount { get; set; }
 		public int WinCount { get; set; }
+		public int MonsterModelId { get; set; }
 		// パラメータ
 		public int Hp { get; set; } // ライフ
 		public int Power { get; set; } // ちから
@@ -22,6 +23,7 @@ namespace Voxel
 
 		public static MonsterParam Default => new MonsterParam
 		{
+			MonsterModelId = (int)MonsterModel.Dog,
 			MonseterId = 1,
 			MonsterName = "イッヌ",
 			LivingWeek = 18,

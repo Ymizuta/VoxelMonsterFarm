@@ -6,6 +6,7 @@ using Voxel.UI;
 using UniRx;
 using DG.Tweening;
 using Voxel.Tournament;
+using Voxel.Common;
 
 namespace Voxel.Battle
 {
@@ -15,9 +16,15 @@ namespace Voxel.Battle
 		[SerializeField] BattleCommandMenu menu;
 		[SerializeField] Camera mainCamera;
 		[SerializeField] Camera subCamera;
-
+		// モンスターのView
+		[SerializeField] private GameObject myMonsterObject;
+		[SerializeField] private GameObject enemyMonsterObject;
+		[SerializeField] private Transform myMonsterRoot;
+		[SerializeField] private Transform enemyMonsterRoot;
+		// モンスターのパラム
 		BattleMonsterParam currentMonster;
 		BattleMonsterParam counterMonster;
+		// プロセスを管理するクラスインスタンス
 		PlayerCommandProcess commandProcess;
 		ExcuteBattleProcess excuteBattleProcess;
 
@@ -27,11 +34,14 @@ namespace Voxel.Battle
 			var converter = new TournamentBattleParamConvertor();
 			currentMonster = converter.ConvertTournamentParamToBattleParam(battleData.CurrentMonsterIdx, TournamentCommonModel.Instance.GetMonsterParam(battleData.CurrentMonsterIdx));
 			counterMonster = converter.ConvertTournamentParamToBattleParam(battleData.CounterMonsterIdx, TournamentCommonModel.Instance.GetMonsterParam(battleData.CounterMonsterIdx));
+			CreateMonsterObject();
+
 			// プロセス管理クラスの初期化
 			commandProcess = this.gameObject.AddComponent<PlayerCommandProcess>();
 			menu.Initialize(new string[] { "攻撃", "溜める", "防御" });
 			commandProcess.Initialize(menu);
 			excuteBattleProcess = this.gameObject.GetComponent<ExcuteBattleProcess>();
+			excuteBattleProcess.Initialize(myMonsterObject, enemyMonsterObject);
 			statusUis[0].SetData(currentMonster);
 			statusUis[1].SetData(counterMonster);
 			// メインループを開始
@@ -39,6 +49,17 @@ namespace Voxel.Battle
 			{
 				StartCoroutine(Process());
 			});
+		}
+
+		/// <summary>
+		/// パラメータからモンスターのオブジェクトを出し分け
+		/// </summary>
+		private void CreateMonsterObject()
+		{
+			var myMonsterObj = Instantiate(CommonMasterManager.Instance.MonsterModelMaster.GetMonsterObject(currentMonster.MonsterModelId), myMonsterRoot);
+			myMonsterObj.gameObject.transform.Rotate(new Vector3(0f, 180f, 0f));
+			var enemyMonsterObj = Instantiate(CommonMasterManager.Instance.MonsterModelMaster.GetMonsterObject(counterMonster.MonsterModelId), enemyMonsterRoot);
+			enemyMonsterObj.gameObject.transform.Rotate(new Vector3(0f, 180f, 0f));
 		}
 
 		private IEnumerator Process()
@@ -139,8 +160,9 @@ namespace Voxel.Battle
 		private ReactiveProperty<int> speed = new ReactiveProperty<int>(); // 速度
 		private ReactiveProperty<int> luck = new ReactiveProperty<int>(); // 運
 
-		public BattleMonsterParam(int monsterIdx, string monsterName, int hp, int attack, int guts, int diffence, int speed, int luck)
+		public BattleMonsterParam(int monsterIdx, string monsterName, int hp, int attack, int guts, int diffence, int speed, int luck, int modelId)
 		{
+			this.MonsterModelId = modelId;
 			this.MonsterIdx = monsterIdx;
 			this.monsterName = monsterName;
 			this.hp.Value = hp;
@@ -151,6 +173,7 @@ namespace Voxel.Battle
 			this.luck.Value = luck;
 		}
 
+		public int MonsterModelId { get; private set; }
 		public int MonsterIdx { get; private set; }
 		public string MonsterName => monsterName;
 		public IReadOnlyReactiveProperty<int> HP => hp;

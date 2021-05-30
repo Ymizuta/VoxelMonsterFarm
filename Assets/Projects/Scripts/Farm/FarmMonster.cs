@@ -7,8 +7,12 @@ namespace Voxel.Farm
 {
 	public class FarmMonster : MonoBehaviour
 	{
-		private void Start()
+		[SerializeField] private Transform root;
+
+		private void Awake()
 		{
+			var obj = Instantiate(Common.CommonMasterManager.Instance.MonsterModelMaster.GetMonsterObject(SaveDataManager.SaveData.CurrentMonster.MonsterModelId), root);
+			obj.transform.Rotate(new Vector3(0f, 180f, 0f));
 			this.gameObject.transform.position = new Vector3(5f, 0f, 0f);
 			MoveLeft();
 		}

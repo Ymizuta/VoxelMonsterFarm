@@ -21,12 +21,12 @@ namespace Voxel.Tournament
 
 		public TournamentMonsterParam[] MonsterParams { get; set; } = new TournamentMonsterParam[]
 			{
-				new TournamentMonsterParam("イッヌ", 100, 30, 30, 25, 20, 45),
-				new TournamentMonsterParam("ネッコ", 100, 30, 30, 25, 20, 45),
-				new TournamentMonsterParam("ウッシ", 100, 30, 30, 25, 20, 45),
-				new TournamentMonsterParam("トッリ", 100, 30, 30, 25, 20, 45),
-				new TournamentMonsterParam("ブッタ", 100, 30, 30, 25, 20, 45),
-				new TournamentMonsterParam("ヒツッジ", 100, 30, 30, 25, 20, 45),
+				new TournamentMonsterParam("イッヌ", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Dog),
+				new TournamentMonsterParam("ネッコ", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Cat),
+				new TournamentMonsterParam("ウッシ", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Cow),
+				new TournamentMonsterParam("トッリ", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Chicken),
+				new TournamentMonsterParam("ブッタ", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Pig),
+				new TournamentMonsterParam("ライオン", 100, 30, 30, 25, 20, 45, (int)MonsterModel.Lion),
 				//new TournamentMonsterParam("ヤッギ", 100, 30, 30, 25, 20, 45),
 				//new TournamentMonsterParam("ドラゴン", 100, 30, 30, 25, 20, 45),
 			};
