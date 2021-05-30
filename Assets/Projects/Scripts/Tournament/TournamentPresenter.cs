@@ -68,12 +68,14 @@ namespace Voxel.Tournament
 		private IEnumerator StartTournamentCoroutine()
 		{
 			yield return null;
-			//yield return new WaitForSeconds(2f);
+			yield return new WaitForSeconds(2f);
 			Comment.Instance.Show($"これより{GameCommonModel.Instance.Month}月{GameCommonModel.Instance.Month}週の{TournamentCommonModel.Instance.TournamentName}を開催します！");
-			//yield return new WaitForSeconds(3f);
+			yield return new WaitForSeconds(2f);
 			Comment.Instance.Show($"上位グレードへの昇格を目指して頑張ってください！！");
-			//yield return new WaitForSeconds(3f);
+			yield return new WaitForSeconds(2f);
 			yield return TournamentProcess();
+			// 大会終了
+			OnFinishTournament();
 		}
 
 		/// <summary>
@@ -87,6 +89,7 @@ namespace Voxel.Tournament
 			{
 				// 優勝判定
 				Comment.Instance.Show($"{Model.GetTournamentWinner().MonsterName}　選手が優勝しました!!");
+				yield return new WaitForSeconds(2f);
 				yield break;
 			}
 
@@ -208,6 +211,16 @@ namespace Voxel.Tournament
 					View.TopMenu.SelectDown();
 				}
 			}
+		}
+
+		/// <summary>
+		/// 大会が完了するときに呼ばれる
+		/// </summary>
+		private void OnFinishTournament()
+		{
+			// 週を進めて牧場に戻る
+			CalendarManager.Instance.NextWeek();
+			SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Farm);
 		}
 
 		/// <summary>
