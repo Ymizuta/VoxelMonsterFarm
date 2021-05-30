@@ -62,7 +62,12 @@ namespace Voxel.Farm
 				.Subscribe(_ => { View.TournamentSchedule.Select(Model.SelectedGrade.Value, Model.SelectedWeek.Value, Model.SelectedScheduleData); }).AddTo(this);
 			Model.SelectedMonth
 				.Where(_ => Model.Command.Value == FarmTopModel.CommandType.Schedule)
-				.Subscribe(_ => { View.TournamentSchedule.UpdateShedule(Model.SelectedMonth.Value, Model.ScheduleDatas); }).AddTo(this);
+				.Subscribe(_ => 
+				{
+					// Œ‚ÌXV
+					Model.MonthDataUpdate();
+					View.TournamentSchedule.UpdateShedule(Model.SelectedMonth.Value, Model.ScheduleDatas);
+				}).AddTo(this);
 		}
 
 		/// <summary>

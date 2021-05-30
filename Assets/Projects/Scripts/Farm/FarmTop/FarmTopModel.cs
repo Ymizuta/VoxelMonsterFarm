@@ -54,12 +54,7 @@ namespace Voxel.Farm
 
 		// todo MVPを分けた方がよい
 		// 予定表に係るデータ
-		public TournamentData[][] ScheduleDatas { get; private set; } = new TournamentData[3][]
-		{
-			new TournamentData[4],
-			new TournamentData[4],
-			new TournamentData[4],
-		};
+		public TournamentData[][] ScheduleDatas { get; private set; }
 		public ReactiveProperty<int> SelectedMonth { get; private set; } = new ReactiveProperty<int>(1);
 		public ReactiveProperty<TournamentGrade> SelectedGrade { get; private set; } = new ReactiveProperty<TournamentGrade>(TournamentGrade.C);
 		public ReactiveProperty<int> SelectedWeek { get; private set; } = new ReactiveProperty<int>(1);
@@ -71,18 +66,8 @@ namespace Voxel.Farm
 			base.Initialize();
 			MonsterParam = SaveDataManager.SaveData.CurrentMonster;
 
-			// 仮の予定表データを初期化
-			for (int i = 0; i < ScheduleDatas.Length; i++)
-			{
-				for (int j = 0; j < ScheduleDatas[0].Length; j++)
-				{
-					ScheduleDatas[i][j] = new TournamentData() { Grade = TournamentGrade.None};
-				}
-			}
-			ScheduleDatas[(int)TournamentGrade.A][1 - 1] = new TournamentData() { Grade = TournamentGrade.A, Week = 1, TournamentName = "グレードA一般戦", MonsterCount = 4 };
-			ScheduleDatas[(int)TournamentGrade.B][2 - 1] = new TournamentData() { Grade = TournamentGrade.B, Week = 2, TournamentName = "グレードB公式戦", MonsterCount = 4 };
-			ScheduleDatas[(int)TournamentGrade.C][3 - 1] = new TournamentData() { Grade = TournamentGrade.C, Week = 3, TournamentName = "グレードC一般戦", MonsterCount = 4 };
-			ScheduleDatas[(int)TournamentGrade.A][4 - 1] = new TournamentData() { Grade = TournamentGrade.A, Week = 4, TournamentName = "グレードA公式戦", MonsterCount = 6 };
+			// 予定表データを初期化
+			MonthDataUpdate();
 		}
 
 		public string GetInitComment()
@@ -91,6 +76,10 @@ namespace Voxel.Farm
 		}
 
 		#region Schedule
+		public void MonthDataUpdate()
+		{
+			ScheduleDatas = TournamentMasterManager.GetTournamentDatas(SelectedMonth.Value);
+		}
 		public void SelectUpTournamentSchedule()
 		{
 			if (SelectedGrade.Value == TournamentGrade.A) return;
