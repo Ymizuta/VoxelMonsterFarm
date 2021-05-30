@@ -167,7 +167,8 @@ namespace Voxel.Battle
 			this.monsterName = monsterName;
 			this.hp.Value = hp;
 			this.attack.Value = attack;
-			this.guts.Value = guts;
+			this.MaxGuts = guts / 10 > 0 ? guts / 10 : 1;
+			this.guts.Value = 0;
 			this.diffence.Value = diffence;
 			this.speed.Value = speed;
 			this.luck.Value = luck;
@@ -182,6 +183,7 @@ namespace Voxel.Battle
 		public IReadOnlyReactiveProperty<int> Diffence => diffence;
 		public IReadOnlyReactiveProperty<int> Speed => speed;
 		public IReadOnlyReactiveProperty<int> Luck => luck;
+		public int MaxGuts { get; private set; }
 
 		public void AddDamage(int damage)
 		{
@@ -192,6 +194,8 @@ namespace Voxel.Battle
 		public void Charge()
 		{
 			// todo 引数でガッツを指定
+			var val = guts.Value + 1;
+			if (MaxGuts < val) return;
 			guts.Value += 1;
 		}
 

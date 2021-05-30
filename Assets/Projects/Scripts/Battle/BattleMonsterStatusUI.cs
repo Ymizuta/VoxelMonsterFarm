@@ -23,7 +23,7 @@ namespace Voxel.Battle
 			this.hpSlider.value = param.HP.Value;
 			// ƒKƒbƒc‰Šú‰»
 			this.monsterGutsText.text = $"Guts:{param.Guts.Value}";
-			this.gutsSlider.maxValue = 3; // todo Œã‚ÅC³
+			this.gutsSlider.maxValue = param.MaxGuts; // todo Œã‚ÅC³
 			this.gutsSlider.value = param.Guts.Value; // todo Œã‚ÅC³
 
 			param.HP

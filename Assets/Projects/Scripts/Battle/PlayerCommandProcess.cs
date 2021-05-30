@@ -23,9 +23,16 @@ namespace Voxel.Battle
 				yield return null;
 				if (Input.GetKeyDown(KeyCode.Space))
 				{
-					menu.Hide();
-					commandParam.command = (BattleCommand)menu.CurrentIdx.Value;
-					yield break;
+					if (param.Guts.Value == 0 && (BattleCommand)menu.CurrentIdx.Value == BattleCommand.Attack)
+					{
+						Comment.Instance.SetComment("ガッツが無いので攻撃はできません！");
+					}
+					else
+					{
+						menu.Hide();
+						commandParam.command = (BattleCommand)menu.CurrentIdx.Value;
+						yield break;
+					}
 				}
 				else if (Input.GetKeyDown(KeyCode.UpArrow))
 				{
