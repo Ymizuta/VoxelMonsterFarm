@@ -24,7 +24,7 @@ namespace Voxel.Training
 					FadeManager.Instance.PlayFadeIn(() => 
 					{
 						// フェードが明けてから実行
-						StartCoroutine(Run(TrainingResult.Success));
+						StartCoroutine(Run(tData.TrainingType, TrainingResult.Success));
 					});
 				}));
 		}
@@ -33,10 +33,10 @@ namespace Voxel.Training
 		/// アニメーションシーンを実行
 		/// </summary>
 		/// <returns></returns>
-		public IEnumerator Run(TrainingResult result)
+		public IEnumerator Run(TrainingType type, TrainingResult result)
 		{
 			// 練習シーンを取得・実行
-			manager.Initialize((int)MonsterModel.Dog);
+			manager.Initialize(SaveDataManager.SaveData.CurrentMonster.MonsterModelId);
 			yield return manager.Run(result);
 
 			// 制御が戻ったら結果発表
@@ -45,7 +45,7 @@ namespace Voxel.Training
 			resultUi.HideResult();
 
 			// パラメータ更新
-			var addVal = GetAddMonsterParam();
+			var addVal = GetAddMonsterParam(GetParamType(type));
 			var monsterparam = SaveDataManager.SaveData.CurrentMonster;
 			resultUi.ShowParam(monsterparam, addVal);
 			UpdateMonsterParam(monsterparam, addVal);
@@ -96,9 +96,11 @@ namespace Voxel.Training
 		/// 変更パラメータを取得
 		/// </summary>
 		/// <returns></returns>
-		private int[] GetAddMonsterParam()
+		private int[] GetAddMonsterParam(ParamType type)
 		{
-			return new int[] { UnityEngine.Random.Range(5, 11), 0, UnityEngine.Random.Range(2, 6), 0, 0, 0 };
+			var addVal = new int[6];
+			addVal[(int)type] = UnityEngine.Random.Range(2, 5);
+			return addVal;
 		}
 
 		/// <summary>
@@ -121,6 +123,28 @@ namespace Voxel.Training
 			{
 				yield return null;
 				if (Input.GetKeyDown(KeyCode.Space)) break;
+			}
+		}
+
+		private ParamType GetParamType(TrainingType type )
+		{
+			switch (type)
+			{
+				case TrainingType.AvoidRock:
+					return ParamType.Speed;
+				case TrainingType.Domino:
+					return ParamType.Power;
+				case TrainingType.LogShock:
+					return ParamType.Deffence;
+				case TrainingType.Running:
+					return ParamType.Hp;
+				case TrainingType.Shooting:
+					return ParamType.Hit;
+				case TrainingType.Studying:
+					return ParamType.Guts;
+				default:
+					Debug.LogWarning($"想定していないタイプが選択されました = {type}");
+					return ParamType.Hp;
 			}
 		}
 	}
