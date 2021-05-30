@@ -27,20 +27,6 @@ namespace Voxel
 		public int Speed { get; set; } // ‰ñ”ð
 		public int Deffence { get; set; } // ä•v‚³
 
-		public static MonsterParam Default => new MonsterParam
-		{
-			MonsterModelId = (int)MonsterModel.Dog,
-			MonseterId = 1,
-			MonsterName = "ƒCƒbƒk",
-			LivingWeek = 18,
-			RaceCount = 0,
-			WinCount = 0,
-			Hp = 30,
-			Power = 25,
-			Guts = 25,
-			Hit = 40,
-			Speed = 35,
-			Deffence = 25,
-		};
+		public static MonsterParam Default => Common.MonsterParamMasterManager.GetParam(1);
 	}
 }
