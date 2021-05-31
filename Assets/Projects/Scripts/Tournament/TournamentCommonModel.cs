@@ -19,6 +19,7 @@ namespace Voxel.Tournament
 	public class TournamentCommonModel : SingletonMonoBehaviour<TournamentCommonModel>
 	{
 		public int TournamentId { get; private set; }
+		public TournamentGrade Grade { get; private set; }
 		public string TournamentName { get; private set; }
 		public TournamentMonsterParam[] MonsterParams { get; set; } // 参加モンスター
 		public ResultType[][] Results { get; private set; }
@@ -32,6 +33,7 @@ namespace Voxel.Tournament
 		{
 			var data = TournamentMasterManager.GetTournamentData(tournamentId);
 			TournamentId = tournamentId;
+			Grade = data.Grade;
 			TournamentName = data.TournamentName;
 			InitMonsterParam(data);
 			InitResult();

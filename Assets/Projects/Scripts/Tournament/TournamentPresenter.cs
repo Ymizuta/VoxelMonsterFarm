@@ -82,6 +82,17 @@ namespace Voxel.Tournament
 				// 優勝判定
 				Comment.Instance.Show($"{Model.GetTournamentWinner().MonsterName}　選手が優勝しました!!");
 				yield return new WaitForSeconds(2f);
+				if (Model.IsMyMonster(Model.GetTournamentWinnerIdx()))
+				{
+					var myGrade = SaveDataManager.SaveData.CurrentMonster.Grade;
+					if (myGrade == TournamentCommonModel.Instance.Grade && myGrade != TournamentGrade.A)
+					{
+						// グレード昇格
+						SaveDataManager.SaveData.CurrentMonster.Grade--;
+						Comment.Instance.Show($"{Model.GetTournamentWinner().MonsterName}　選手は上位グレードに挑戦できます!!");
+						yield return new WaitForSeconds(2f);
+					}
+				}
 				// 大会終了
 				OnFinishTournament();
 				yield break;
@@ -227,8 +238,18 @@ namespace Voxel.Tournament
 		/// <returns></returns>
 		private (int, int) CalcNPCMatch()
 		{
-			var winnerIdx = Model.CurrentMonsterIdx;
-			var loserIdx = Model.CounterMonsterIdx;
+			var winnerIdx = -1;
+			var loserIdx = -1;
+			if (0.5f <= Random.Range(0f,1f))
+			{
+				winnerIdx = Model.CurrentMonsterIdx;
+				loserIdx = Model.CounterMonsterIdx;
+			}
+			else
+			{
+				winnerIdx = Model.CounterMonsterIdx;
+				loserIdx = Model.CurrentMonsterIdx;
+			}
 			return (winnerIdx, loserIdx);
 		}
 	}

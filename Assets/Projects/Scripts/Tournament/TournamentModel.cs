@@ -57,6 +57,11 @@ namespace Voxel.Tournament
 		/// <returns></returns>
 		public TournamentMonsterParam GetTournamentWinner()
 		{
+			return TournamentCommonModel.Instance.GetMonsterParam(GetTournamentWinnerIdx());
+		}
+
+		public int GetTournamentWinnerIdx()
+		{
 			var winnerIdx = -1;
 			var maxCount = 0;
 			for (int i = 0; i < TournamentCommonModel.Instance.Results.Length; i++)
@@ -72,7 +77,7 @@ namespace Voxel.Tournament
 					winnerIdx = i;
 				}
 			}
-			return TournamentCommonModel.Instance.GetMonsterParam(winnerIdx);
+			return winnerIdx;
 		}
 
 		/// <summary>
@@ -82,6 +87,11 @@ namespace Voxel.Tournament
 		public bool IsMyMonsterTurn()
 		{
 			return CurrentMonsterIdx == 0;
+		}
+
+		public bool IsMyMonster(int monsterIdx)
+		{
+			return TournamentCommonModel.Instance.IsMyMonsterWin(monsterIdx);
 		}
 
 		public void SetResult(int winnerIdx, int loserIdx)
