@@ -21,7 +21,7 @@ namespace Voxel.Tournament
 			for (int i = 0; i < names.Length; i++)
 			{
 				var item = Instantiate(itemPrefab, itemRoot).GetComponent<TournamentMonsterListItem>();
-				item.SetData(i+1, names[i]);
+				item.SetData(i+1, names[i], TournamentCommonModel.Instance.MonsterParams[i].MonsterModelId);
 				items[i] = item;
  			}
 		}

@@ -9,11 +9,14 @@ namespace Voxel.Tournament
 	{
 		[SerializeField] Text numberText = null;
 		[SerializeField] Text nameText = null;
+		[SerializeField] Image faceImg = null;
+		[SerializeField] Sprite[] faceSprits;
 
-		public void SetData(int number, string name)
+		public void SetData(int number, string name, int faceTypeId)
 		{
 			numberText.text = number.ToString();
 			nameText.text = name;
+			faceImg.sprite = faceSprits[faceTypeId];
 		}
 	}
 }
