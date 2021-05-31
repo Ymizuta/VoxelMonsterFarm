@@ -35,7 +35,7 @@ namespace Voxel.Farm
 		{
 			this.monsterName.text = param.MonsterName;
 			this.Age.text = $"{param.LivingWeek / 12}歳　{param.LivingWeek % 12}か月";
-			this.Achievement.text = $"{param.RaceCount}戦　{param.WinCount}勝";
+			this.Achievement.text = $"{param.BattleCount}戦　{param.WinCount}勝";
 			// 能力値設定
 			var calc = new StringCalculator();
 			items[(int)ParamType.Hp].SetData(calc.GetParamName(ParamType.Hp), param.Hp);

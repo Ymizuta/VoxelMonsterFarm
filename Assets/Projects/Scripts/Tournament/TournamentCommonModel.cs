@@ -38,6 +38,11 @@ namespace Voxel.Tournament
 			InitMatchOrderList();
 		}
 
+		public bool IsMyMonsterWin(int idx)
+		{
+			return idx == 0;
+		}
+
 		/// <summary>
 		/// 参加モンスターの初期化
 		/// </summary>

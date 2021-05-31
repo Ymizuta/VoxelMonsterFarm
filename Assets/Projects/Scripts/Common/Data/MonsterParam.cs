@@ -31,7 +31,7 @@ namespace Voxel
 		public int MonseterId { get { return monsterId; } set { monsterId = value; } }
 		public string MonsterName { get { return monsterName; } set { monsterName = value; } }
 		public int LivingWeek { get { return livingWeek; } set { livingWeek = value; } }
-		public int RaceCount { get; set; }
+		public int BattleCount { get; set; }
 		public int WinCount { get { return winCount; } set { winCount = value; } }
 		public int MonsterModelId { get { return monsterModelId; } set { monsterModelId = value; } }
 		// ”æ˜J“x
