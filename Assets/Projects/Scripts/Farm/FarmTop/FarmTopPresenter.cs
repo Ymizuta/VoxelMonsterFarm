@@ -182,6 +182,10 @@ namespace Voxel.Farm
 							});
 						}, () => { }, "‚±‚Ì‘å‰ï‚ÉŽQ‰Á‚µ‚Ü‚·‚©H");
 					}
+					else
+					{
+						ConfirmPopup.Instance.Show(() => {}, "‚±‚Ì“ú’ö‚Í‘I‘ð‚Å‚«‚Ü‚¹‚ñ");
+					}
 				}).AddTo(setEventsDisposable);
 			// –ß‚é
 			InputManager.Instance.OnBKeyDownAsObservable
