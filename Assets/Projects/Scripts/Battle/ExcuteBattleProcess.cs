@@ -129,10 +129,11 @@ namespace Voxel.Battle
 
 		private IEnumerator DownAnimationCoroutine(GameObject downMonster)
 		{
-			var animator = downMonster.GetComponent<Animator>();
-			animator.Play("Down");
-			yield return null;
-			yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f );
+			yield return new WaitForSeconds(1f);
+			//var animator = downMonster.GetComponent<Animator>();
+			//animator.Play("Down");
+			//yield return null;
+			//yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f );
 		}
 
 		private IEnumerator ExecuteAttackQueueCoroutine(GameObject attacker, GameObject receiver)
