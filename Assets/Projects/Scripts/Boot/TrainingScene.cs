@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Voxel.SceneManagement;
 using Voxel.UI;
+using Voxel.Common;
 
 namespace Voxel.Training
 {
@@ -45,8 +46,8 @@ namespace Voxel.Training
 			resultUi.HideResult();
 
 			// パラメータ更新
-			var addVal = GetAddMonsterParam(GetParamType(type));
 			var monsterparam = SaveDataManager.SaveData.CurrentMonster;
+			var addVal = GetAddMonsterParam(GetParamType(type), new MonsterCalculator().CalcCondition(monsterparam.Fatigue));
 			resultUi.ShowParam(monsterparam, addVal);
 			UpdateMonsterParam(monsterparam, addVal);
 			Comment.Instance.Show(GetResultComment(addVal));
@@ -96,10 +97,16 @@ namespace Voxel.Training
 		/// 変更パラメータを取得
 		/// </summary>
 		/// <returns></returns>
-		private int[] GetAddMonsterParam(ParamType type)
+		private int[] GetAddMonsterParam(ParamType type, MonsterCondition condition)
 		{
 			var addVal = new int[6];
-			addVal[(int)type] = UnityEngine.Random.Range(2, 5);
+			var val = UnityEngine.Random.Range(2, 5);
+			if (condition == MonsterCondition.Tired || condition == MonsterCondition.VeryTired)
+			{
+				// 疲労が溜まっていると上昇値が減る
+				val = Mathf.Clamp((int)(val * 0.5f), 0, val);
+			}
+			addVal[(int)type] = val;
 			return addVal;
 		}
 
