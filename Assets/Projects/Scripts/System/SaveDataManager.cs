@@ -34,6 +34,8 @@ namespace Voxel
 				SaveData = SaveData.Default;
 				// デフォルトのモンスターを用意
 				SaveData.Wrapper.Monsters.Add(MonsterParam.Default);
+				// todo 暫定で初期のグレードを設定
+				SaveData.Wrapper.Monsters[0].Grade = TournamentGrade.C;
 				SaveData.CurrentMonsterId = 1;
 			}
 			else

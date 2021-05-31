@@ -26,7 +26,7 @@ namespace Voxel.Common
 				var data = list[i];
 				var grade = data.grade;
 				var week = data.week;
-				datas[grade][week - 1] = new TournamentData() { TournamentId = data.id, Grade = (TournamentGrade)grade, MonsterCount = data.monsterCount, TournamentName = data.tournamentName, Week = week };
+				datas[grade][week - 1] = new TournamentData() { TournamentId = data.id, Grade = (TournamentGrade)grade, MonsterCount = data.monsterCount, TournamentName = data.tournamentName, Month = data.month, Week = week };
 			}
 			return datas;
 		}

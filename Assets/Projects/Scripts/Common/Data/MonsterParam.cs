@@ -17,6 +17,7 @@ namespace Voxel
 	{
 		[SerializeField] private float fatigue;
 		[SerializeField] private int monsterId;
+		[SerializeField] private TournamentGrade grade;
 		[SerializeField] private string monsterName;
 		[SerializeField] private int livingWeek;
 		[SerializeField] private int winCount;
@@ -29,6 +30,7 @@ namespace Voxel
 		[SerializeField] private int deffence;
 
 		public int MonseterId { get { return monsterId; } set { monsterId = value; } }
+		public TournamentGrade Grade { get { return grade; } set { grade = value; } }
 		public string MonsterName { get { return monsterName; } set { monsterName = value; } }
 		public int LivingWeek { get { return livingWeek; } set { livingWeek = value; } }
 		public int BattleCount { get; set; }

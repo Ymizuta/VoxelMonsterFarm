@@ -76,6 +76,13 @@ namespace Voxel.Farm
 		}
 
 		#region Schedule
+		public bool CanEntryTournament()
+		{
+			return
+				MonsterParam.Grade <= SelectedScheduleData.Grade
+				&& SelectedScheduleData.Month == GameCommonModel.Instance.Month.Value
+				&& SelectedScheduleData.Week == GameCommonModel.Instance.Week.Value;
+		}
 		public void MonthDataUpdate()
 		{
 			ScheduleDatas = TournamentMasterManager.GetTournamentDatas(SelectedMonth.Value);

@@ -169,16 +169,19 @@ namespace Voxel.Farm
 				.Where(_ => Model.IsOperatable)
 				.Subscribe(_ =>
 				{
-					YesNoPopup.Instance.Show(() =>
+					if (Model.CanEntryTournament())
 					{
-						FadeManager.Instance.PlayFadeOut(() =>
+						YesNoPopup.Instance.Show(() =>
 						{
-							Comment.Instance.Hide();
-							var data = new Tournament.TournamentSceneData(Model.SelectedScheduleData.TournamentId);
-							SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Tournament, data);
-							OnBack();
-						});
-					}, () => { }, "この大会に参加しますか？");
+							FadeManager.Instance.PlayFadeOut(() =>
+							{
+								Comment.Instance.Hide();
+								var data = new Tournament.TournamentSceneData(Model.SelectedScheduleData.TournamentId);
+								SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Tournament, data);
+								OnBack();
+							});
+						}, () => { }, "この大会に参加しますか？");
+					}
 				}).AddTo(setEventsDisposable);
 			// 戻る
 			InputManager.Instance.OnBKeyDownAsObservable
