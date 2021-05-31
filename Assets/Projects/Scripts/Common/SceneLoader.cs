@@ -9,6 +9,7 @@ namespace Voxel.SceneManagement
 	{
 		public enum SceneName
 		{
+			Title,
 			Farm,
 			Running,
 			Tournament,

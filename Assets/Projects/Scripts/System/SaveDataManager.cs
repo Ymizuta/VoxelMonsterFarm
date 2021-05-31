@@ -31,17 +31,34 @@ namespace Voxel
 			var str = PlayerPrefs.GetString(DefaultSaveKey);
 			if(str == "")
 			{
-				SaveData = SaveData.Default;
-				// デフォルトのモンスターを用意
-				SaveData.Wrapper.Monsters.Add(MonsterParam.Default);
-				// todo 暫定で初期のグレードを設定
-				SaveData.Wrapper.Monsters[0].Grade = TournamentGrade.C;
-				SaveData.CurrentMonsterId = 1;
+				ResetSaveData();
 			}
 			else
 			{
 				SaveData = JsonUtility.FromJson<SaveData>(str);
 			}
+		}
+
+		/// <summary>
+		/// セーブデータが存在すればtrueを返す
+		/// </summary>
+		/// <returns></returns>
+		public static bool IsSaveDataExist()
+		{
+			return PlayerPrefs.GetString(DefaultSaveKey) != "";
+		}
+
+		/// <summary>
+		/// セーブデータリセット
+		/// </summary>
+		public static void ResetSaveData()
+		{
+			SaveData = SaveData.Default;
+			// デフォルトのモンスターを用意
+			SaveData.Wrapper.Monsters.Add(MonsterParam.Default);
+			// todo 暫定で初期のグレードを設定
+			SaveData.Wrapper.Monsters[0].Grade = TournamentGrade.C;
+			SaveData.CurrentMonsterId = 1;
 		}
 	}
 }

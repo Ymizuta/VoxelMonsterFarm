@@ -12,9 +12,6 @@ namespace Voxel.Boot
 		public override void Initialize(SceneData data = null)
 		{
 			base.Initialize(data);
-			SaveDataManager.Load();
-			// ‰Šú‰»
-			GameCommonModel.Instance.SetCalendar();
 
 			for (int i = 0; i < dontDestroyObjects.Length; i++)
 			{
@@ -22,7 +19,7 @@ namespace Voxel.Boot
 			}
 			Voxel.UI.FadeManager.Instance.PlayFadeOut(() => 
 			{
-				SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Farm);
+				SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Title);
 			});
 		}
 	}

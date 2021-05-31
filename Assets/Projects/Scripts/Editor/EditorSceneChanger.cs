@@ -12,6 +12,12 @@ public class EditorSceneChanger : MonoBehaviour
 		ChangeScene("Boot");
 	}
 
+	[MenuItem("ChangeScene/Title")]
+	public static void ChangeTitleScene()
+	{
+		ChangeScene("Title");
+	}
+
 	[MenuItem("ChangeScene/Farm")]
 	public static void ChangeFarmScene()
 	{
