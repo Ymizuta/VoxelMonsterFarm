@@ -70,7 +70,11 @@ namespace Voxel.Training
 			{
 				yield return null;
 			}
-			manager = SceneManager.GetSceneAt(1).GetRootGameObjects()[0].GetComponent<TrainingManagerBase>();
+			foreach (var item in SceneManager.GetSceneAt(1).GetRootGameObjects())
+			{
+				manager = item.GetComponent<TrainingManagerBase>();
+				if (manager != null) break;
+			}
 			action?.Invoke();
 		}
 
