@@ -49,5 +49,10 @@ namespace Voxel
 		public int Deffence { get { return deffence; } set { deffence = value; } } // ä•v‚³
 
 		public static MonsterParam Default => Common.MonsterParamMasterManager.GetParam(1);
+
+		public static MonsterParam GetDefaultMonsterParam(int monsterId)
+		{
+			return Common.MonsterParamMasterManager.GetParam(monsterId);
+		}
 	}
 }

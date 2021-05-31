@@ -51,14 +51,14 @@ namespace Voxel
 		/// <summary>
 		/// セーブデータリセット
 		/// </summary>
-		public static void ResetSaveData()
+		public static void ResetSaveData(int monsterId = 1)
 		{
 			SaveData = SaveData.Default;
 			// デフォルトのモンスターを用意
-			SaveData.Wrapper.Monsters.Add(MonsterParam.Default);
+			SaveData.Wrapper.Monsters.Add(MonsterParam.GetDefaultMonsterParam(monsterId));
 			// todo 暫定で初期のグレードを設定
 			SaveData.Wrapper.Monsters[0].Grade = TournamentGrade.C;
-			SaveData.CurrentMonsterId = 1;
+			SaveData.CurrentMonsterId = monsterId;
 		}
 	}
 }
