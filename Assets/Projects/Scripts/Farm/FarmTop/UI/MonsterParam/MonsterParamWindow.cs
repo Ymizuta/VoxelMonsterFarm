@@ -9,6 +9,7 @@ namespace Voxel.Farm
 	{
 		[SerializeField] private MonsterParamItem[] items;
 		[SerializeField] private GameObject windowObject;
+		[SerializeField] private Text gradeText;
 		[SerializeField] private Text monsterName;
 		[SerializeField] private Text Age;
 		[SerializeField] private Text Achievement;
@@ -33,6 +34,7 @@ namespace Voxel.Farm
 
 		public void SetData(MonsterParam param)
 		{
+			this.gradeText.text = param.Grade.ToString();
 			this.monsterName.text = param.MonsterName;
 			this.Age.text = $"{param.LivingWeek / 12}çŒÅ@{param.LivingWeek % 12}Ç©åé";
 			this.Achievement.text = $"{param.BattleCount}êÌÅ@{param.WinCount}èü";
