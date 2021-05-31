@@ -59,7 +59,6 @@ namespace Voxel.Tournament
 		private IEnumerator StartTournamentCoroutine()
 		{
 			yield return null;
-			yield return new WaitForSeconds(2f);
 			Comment.Instance.Show($"これより{GameCommonModel.Instance.Month}月{GameCommonModel.Instance.Month}週の{TournamentCommonModel.Instance.TournamentName}を開催します！");
 			yield return new WaitForSeconds(2f);
 			Comment.Instance.Show($"上位グレードへの昇格を目指して頑張ってください！！");

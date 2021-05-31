@@ -98,7 +98,7 @@ namespace Voxel.Battle
 
 			// 敵の行動を決める
 			var enemyCommandParam = new CommandParam();
-			yield return commandProcess.StartProcess(enemyMonster, enemyCommandParam);
+			yield return commandProcess.StartProcess(enemyMonster, myMonster, enemyCommandParam);
 
 			// 実行
 			yield return excuteBattleProcess.StartProcess(new BattleMonsterParam[] { myMonster, enemyMonster} , new CommandParam[] { myCommandParam, enemyCommandParam});
@@ -202,7 +202,7 @@ namespace Voxel.Battle
 		public void ReduceGuts()
 		{
 			// todo 引数でガッツを指定
-			guts.Value -= 1;
+			guts.Value = 0;
 		}
 
 		public bool IsDown()

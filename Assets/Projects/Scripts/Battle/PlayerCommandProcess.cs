@@ -53,41 +53,106 @@ namespace Voxel.Battle
 			}
 		}
 
-		public IEnumerator StartProcess(BattleMonsterParam param, CommandParam commandParam)
+		/// <summary>
+		/// AIの選択コマンドを返す
+		/// </summary>
+		/// <param name="param"></param>
+		/// <param name="commandParam"></param>
+		/// <returns></returns>
+		public IEnumerator StartProcess(BattleMonsterParam param, BattleMonsterParam counterMonsterParam, CommandParam commandParam)
 		{
 			yield return null;
-			commandParam.command = SelectCommand(param);
+			commandParam.command = SelectCommand(param, counterMonsterParam);
 		}
 
-		private BattleCommand SelectCommand(BattleMonsterParam param)
+		/// <summary>
+		/// AIのコマンド選択
+		/// </summary>
+		/// <param name="param"></param>
+		/// <returns></returns>
+		private BattleCommand SelectCommand(BattleMonsterParam param, BattleMonsterParam counterMonsterParam)
 		{
 			var rate = Random.Range(0f, 100f);
 
 			if (0 < param.Guts.Value)
 			{
-				if (50f <= rate)
+				if(param.Guts.Value == param.MaxGuts)
 				{
-					return BattleCommand.Attack;
-				}
-				else if (20f <= rate)
-				{
-					return BattleCommand.Charge;
+					// ガッツが満タン
+					if (IsCounterMonsterGutsZero())
+					{
+						// 相手のガッツが０
+						return BattleCommand.Attack;
+					}
+					else
+					{
+						// 相手のガッツが０ではない
+						if (50f <= rate)
+						{
+							return BattleCommand.Attack;
+						}
+						else
+						{
+							return BattleCommand.Guard;
+						}
+					}
 				}
 				else
 				{
-					return BattleCommand.Guard;
+					if (IsCounterMonsterGutsZero())
+					{
+						// 相手のガッツが0
+						if (50f <= rate)
+						{
+							return BattleCommand.Attack;
+						}
+						else
+						{
+							return BattleCommand.Charge;
+						}
+					}
+					else
+					{
+						// 相手のガッツが0ではない
+						if (50f <= rate)
+						{
+							return BattleCommand.Attack;
+						}
+						else if (20f <= rate)
+						{
+							return BattleCommand.Charge;
+						}
+						else
+						{
+							return BattleCommand.Guard;
+						}
+					}
 				}
 			}
 			else
 			{
-				if (50f <= rate)
+				// 自分のガッツが溜まっていない
+				if (IsCounterMonsterGutsZero())
 				{
+					// 相手のガッツが溜まっていない
 					return BattleCommand.Charge;
 				}
 				else
 				{
-					return BattleCommand.Guard;
+					// 相手のガッツが溜まっている
+					if (50f <= rate)
+					{
+						return BattleCommand.Charge;
+					}
+					else
+					{
+						return BattleCommand.Guard;
+					}				
 				}
+			}
+			bool IsCounterMonsterGutsZero()
+			{
+				return counterMonsterParam.Guts.Value == 0;
 			}
 		}
 	}

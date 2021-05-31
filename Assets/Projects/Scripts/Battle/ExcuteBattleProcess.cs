@@ -82,9 +82,9 @@ namespace Voxel.Battle
 			switch (command.command)
 			{
 				case BattleCommand.Attack:
-					monster.ReduceGuts();
 					var damage = CalcDamage(monster, command, target, targetCommand);
 					target.AddDamage(damage);
+					monster.ReduceGuts();
 					Comment.Instance.Show($"{target.MonsterName}に<color=#ff0000>{damage}</color>のダメージ! 残り体力は{target.HP.Value}");
 					break;
 				case BattleCommand.Charge:
@@ -106,7 +106,8 @@ namespace Voxel.Battle
 			// 防御貫通とかあるかも
 			// 属性攻撃はマスタでダメージ倍率とか設定した方がいいかも
 			// 振れ幅をつける。これもマスタで（略
-			var damage = (int)(monster.Attack.Value * Random.Range(0.8f, 1.2f));
+			var gutsVal = monster.Guts.Value > 1 ? monster.Guts.Value * 1.2f : 1f; // ガッツが2以上溜まっていると、ガッツの値×1.5倍をダメージに乗算する
+			var damage = (int)(monster.Attack.Value * Random.Range(0.8f, 1.2f) * gutsVal);
 			var adjustVal = 1.0f;
 			switch (targetCommand.command)
 			{
@@ -114,7 +115,7 @@ namespace Voxel.Battle
 					adjustVal = 1.0f;
 					break;
 				case BattleCommand.Charge:
-					adjustVal = 2.0f;
+					adjustVal = 1.5f;
 					break;
 				case BattleCommand.Guard:
 					// todo 本当はここで防御力とか加味した方がいいかも
