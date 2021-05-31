@@ -31,6 +31,10 @@ namespace Voxel.Tournament
 				if (!tData.IsInitialize)
 				{
 					// バトルSceneから戻ってきた
+					// 自分の結果を更新
+					SaveDataManager.SaveData.CurrentMonster.BattleCount++;
+					if (TournamentCommonModel.Instance.IsMyMonsterWin(tData.WinMonsterIdx)) SaveDataManager.SaveData.CurrentMonster.WinCount++;
+					// 結果を反映
 					Model.SetResult(tData.WinMonsterIdx, tData.LoseMonsterIdx);
 					Comment.Instance.Show($"{TournamentCommonModel.Instance.MonsterParams[tData.WinMonsterIdx].MonsterName}が勝利！{TournamentCommonModel.Instance.MonsterParams[tData.LoseMonsterIdx].MonsterName}敗れました！");
 					View.Board.UpdateBoard();
@@ -64,8 +68,6 @@ namespace Voxel.Tournament
 			Comment.Instance.Show($"上位グレードへの昇格を目指して頑張ってください！！");
 			yield return new WaitForSeconds(2f);
 			yield return TournamentProcess();
-			// 大会終了
-			OnFinishTournament();
 		}
 
 		/// <summary>
@@ -80,6 +82,8 @@ namespace Voxel.Tournament
 				// 優勝判定
 				Comment.Instance.Show($"{Model.GetTournamentWinner().MonsterName}　選手が優勝しました!!");
 				yield return new WaitForSeconds(2f);
+				// 大会終了
+				OnFinishTournament();
 				yield break;
 			}
 
@@ -101,6 +105,7 @@ namespace Voxel.Tournament
 					// 棄権
 					loserIdx = Model.CurrentMonsterIdx;
 					winnerIdx = Model.CounterMonsterIdx;
+					SaveDataManager.SaveData.CurrentMonster.BattleCount++;
 				}
 			}
 			else
