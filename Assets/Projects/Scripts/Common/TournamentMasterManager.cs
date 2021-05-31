@@ -26,9 +26,15 @@ namespace Voxel.Common
 				var data = list[i];
 				var grade = data.grade;
 				var week = data.week;
-				datas[grade][week - 1] = new TournamentData() { Grade = (TournamentGrade)grade, MonsterCount = data.monsterCount, TournamentName = data.tournamentName, Week = week };
+				datas[grade][week - 1] = new TournamentData() { TournamentId = data.id, Grade = (TournamentGrade)grade, MonsterCount = data.monsterCount, TournamentName = data.tournamentName, Week = week };
 			}
 			return datas;
+		}
+
+		public static TournamentData GetTournamentData(int id)
+		{
+			var data = CommonMasterManager.Instance.TournamentParamMater.sheets[0].list.Find(x => x.id == id);
+			return new TournamentData() { TournamentId = id, Grade = (TournamentGrade)data.grade, TournamentName = data.tournamentName, MonsterCount = data.monsterCount, Week = data.week };
 		}
 	}
 }

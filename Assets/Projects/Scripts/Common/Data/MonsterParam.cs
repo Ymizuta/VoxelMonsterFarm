@@ -4,6 +4,14 @@ using UnityEngine;
 
 namespace Voxel
 {
+	public enum TournamentGrade
+	{
+		None = -1,
+		A = 0,
+		B,
+		C,
+	}
+
 	[System.Serializable]
 	public class MonsterParam
 	{

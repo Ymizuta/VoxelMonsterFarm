@@ -6,6 +6,7 @@ namespace Voxel.Farm
 {
 	public class TournamentData
 	{
+		public int TournamentId { get; set; }
 		public TournamentGrade Grade { get; set; }
 		public int Week { get; set; }
 		public string TournamentName { get; set; }

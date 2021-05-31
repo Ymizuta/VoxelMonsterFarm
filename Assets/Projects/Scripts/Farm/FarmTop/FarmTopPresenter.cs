@@ -174,7 +174,8 @@ namespace Voxel.Farm
 						FadeManager.Instance.PlayFadeOut(() =>
 						{
 							Comment.Instance.Hide();
-							SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Tournament);
+							var data = new Tournament.TournamentSceneData(Model.SelectedScheduleData.TournamentId);
+							SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Tournament, data);
 							OnBack();
 						});
 					}, () => { }, "‚±‚Ì‘å‰ï‚ÉŽQ‰Á‚µ‚Ü‚·‚©H");

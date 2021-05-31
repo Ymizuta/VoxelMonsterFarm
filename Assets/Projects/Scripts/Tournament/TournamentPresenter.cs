@@ -18,15 +18,6 @@ namespace Voxel.Tournament
 		{
 			if (isInit) yield break;
 			yield return base.Initialize();
-
-			// 遷移前処理
-			// シーン間をやり取りするモデルを用意
-			if(TournamentCommonModel.Instance == null)
-			{
-				var commonModel = new GameObject("TournamentCommonModel").AddComponent<TournamentCommonModel>();
-				commonModel.Initialize();
-				DontDestroyOnLoad(commonModel.gameObject);
-			}
 			isInit = true;
 		}
 
@@ -36,12 +27,12 @@ namespace Voxel.Tournament
 			View.OnBeforeMoveIn(Model.MonsterParams, Model.MenuStrs, TournamentCommonModel.Instance.Results);
 			FadeManager.Instance.PlayFadeIn(() =>
 			{
-				if (data != null)
+				var tData = (TournamentSceneData)data;
+				if (!tData.IsInitialize)
 				{
 					// バトルSceneから戻ってきた
-					var resultData = (TournamentSceneData)data;
-					Model.SetResult(resultData.WinMonsterIdx, resultData.LoseMonsterIdx);
-					Comment.Instance.Show($"{TournamentCommonModel.Instance.MonsterParams[resultData.WinMonsterIdx].MonsterName}が勝利！{TournamentCommonModel.Instance.MonsterParams[resultData.LoseMonsterIdx].MonsterName}敗れました！");
+					Model.SetResult(tData.WinMonsterIdx, tData.LoseMonsterIdx);
+					Comment.Instance.Show($"{TournamentCommonModel.Instance.MonsterParams[tData.WinMonsterIdx].MonsterName}が勝利！{TournamentCommonModel.Instance.MonsterParams[tData.LoseMonsterIdx].MonsterName}敗れました！");
 					View.Board.UpdateBoard();
 					// ローテーションを更新
 					Model.IncrementMatchIdx();
@@ -219,6 +210,8 @@ namespace Voxel.Tournament
 		private void OnFinishTournament()
 		{
 			// 週を進めて牧場に戻る
+			// 共通モデルを削除しておく
+			Destroy(TournamentCommonModel.Instance.gameObject);
 			CalendarManager.Instance.NextWeek();
 			SceneLoader.Instance.ChangeScene(SceneLoader.SceneName.Farm);
 		}

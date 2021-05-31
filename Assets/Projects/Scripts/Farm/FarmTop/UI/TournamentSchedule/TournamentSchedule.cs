@@ -5,14 +5,6 @@ using UnityEngine.UI;
 
 namespace Voxel.Farm
 {
-	public enum TournamentGrade
-	{
-		None = -1,
-		A = 0,
-		B,
-		C,
-	}
-
 	public class TournamentSchedule : MonoBehaviour
 	{
 		[SerializeField] private Text monthText;

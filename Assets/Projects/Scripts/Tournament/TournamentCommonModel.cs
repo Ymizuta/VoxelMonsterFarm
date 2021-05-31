@@ -18,18 +18,9 @@ namespace Voxel.Tournament
 	/// </summary>
 	public class TournamentCommonModel : SingletonMonoBehaviour<TournamentCommonModel>
 	{
+		public int TournamentId { get; private set; }
 		public string TournamentName { get; private set; }
-
-		public TournamentMonsterParam[] MonsterParams { get; set; } = new TournamentMonsterParam[]
-			{
-				new MonsterTournamentParamConvertor().ConvertMonsterParamToTournamentParam(SaveDataManager.SaveData.CurrentMonster),
-				MonsterParamMasterManager.GetTournamentParam(2),
-				MonsterParamMasterManager.GetTournamentParam(3),
-				MonsterParamMasterManager.GetTournamentParam(4),
-				MonsterParamMasterManager.GetTournamentParam(5),
-				MonsterParamMasterManager.GetTournamentParam(6),
-			};
-
+		public TournamentMonsterParam[] MonsterParams { get; set; } // 参加モンスター
 		public ResultType[][] Results { get; private set; }
 		public List<int> MatchOrderList { get; private set; }
 		public int RotationCount { get; private set; } // 現在のローテーション数
@@ -37,11 +28,37 @@ namespace Voxel.Tournament
 		public int MaxRotationCount { get; private set; } // 全ローテーション数
 		public int MatchCountPerRotation { get; private set; } // １ローテーションあたりの試合数
 
-		public void Initialize()
+		public void Initialize(int tournamentId)
 		{
-			TournamentName = "プロトタイプ杯";
+			var data = TournamentMasterManager.GetTournamentData(tournamentId);
+			TournamentId = tournamentId;
+			TournamentName = data.TournamentName;
+			InitMonsterParam(data);
 			InitResult();
 			InitMatchOrderList();
+		}
+
+		/// <summary>
+		/// 参加モンスターの初期化
+		/// </summary>
+		/// <param name="tournamentId"></param>
+		private void InitMonsterParam(Farm.TournamentData data)
+		{
+			// 最初に自分のモンスターは確定で登録
+			MonsterParams = new TournamentMonsterParam[data.MonsterCount];
+			MonsterParams[0] = new MonsterTournamentParamConvertor().ConvertMonsterParamToTournamentParam(SaveDataManager.SaveData.CurrentMonster);
+			// 候補のパラムを取得
+			var candidats = MonsterParamMasterManager.GetMonsterParams(data.Grade);
+			// 抽選を行う
+			var count = data.MonsterCount - 1; // 自分のモンスターは必ず参加するので-1する
+			var idx = 1;
+			while (count-- > 0)
+			{
+				var ransu = UnityEngine.Random.Range(0, candidats.Count);
+				MonsterParams[idx] = MonsterParamMasterManager.GetTournamentParam(candidats[ransu].MonseterId);
+				candidats.RemoveAt(ransu);
+				idx++;
+			}
 		}
 
 		/// <summary>
