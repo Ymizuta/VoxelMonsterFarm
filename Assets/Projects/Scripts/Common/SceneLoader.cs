@@ -48,7 +48,11 @@ namespace Voxel.SceneManagement
 			{
 				yield return null;
 			}
-			SceneManager.GetActiveScene().GetRootGameObjects()[0].GetComponent<SceneBase>().Initialize(data);
+			foreach (var item in SceneManager.GetActiveScene().GetRootGameObjects())
+			{
+				var scene = item.GetComponent<SceneBase>();
+				if (scene != null) scene.Initialize(data);
+			}
 		}
 	}
 }
