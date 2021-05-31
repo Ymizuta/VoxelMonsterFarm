@@ -7,6 +7,8 @@ namespace Voxel.SceneManagement
 {
 	public class SceneLoader : SingletonMonoBehaviour<SceneLoader>
 	{
+		[SerializeField] Boot.BootScene bootScene;
+
 		public enum SceneName
 		{
 			Title,
@@ -20,7 +22,7 @@ namespace Voxel.SceneManagement
 		protected override void Awake()
 		{
 			base.Awake();
-			SceneManager.GetActiveScene().GetRootGameObjects()[0].GetComponent<Boot.BootScene>().Initialize();
+			bootScene.Initialize();
 		}
 
 		/// <summary>
